@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/*
+ * Kaomoji Palette design tokens.
+ * Palette derived from the Visily mockups in /designs:
+ * white surfaces, soft sky-blue primary, warm peach-pink accent, charcoal ink,
+ * rounded cards and gentle shadows.
+ */
+@theme {
+  --font-sans: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic",
+    system-ui, "Segoe UI Symbol", sans-serif;
+
+  /* Brand */
+  --color-primary: #3d8bf0;
+  --color-primary-strong: #2f78dd;
+  --color-primary-soft: #eaf3fd;
+  --color-accent: #f8917f;
+  --color-accent-soft: #fdeae3;
+
+  /* Ink */
+  --color-ink: #1f2933;
+  --color-ink-soft: #5b6573;
+  --color-ink-faint: #8b94a3;
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-surface-tint: #f5f8fc;
+  --color-hairline: #e9edf3;
+
+  /* Shape */
+  --radius-card: 1.25rem;
+  --shadow-soft: 0 4px 14px -8px rgba(31, 41, 51, 0.12);
+  --shadow-card: 0 10px 28px -14px rgba(31, 41, 51, 0.2);
+}
+
+/*
+ * Per-category theming. Each category has an accent + a soft tint used for
+ * card backgrounds and the category pages built in later sessions.
+ * happy = warm yellow, cute = pink, sad = cool blue, etc. (per charter).
+ */
+:root {
+  --cat-happy: #eaa225;
+  --cat-happy-soft: #fdf3dc;
+  --cat-cute: #ef74a4;
+  --cat-cute-soft: #fde4ee;
+  --cat-sad: #5391d4;
+  --cat-sad-soft: #e3eefb;
+  --cat-angry: #e0664f;
+  --cat-angry-soft: #fbe2db;
+  --cat-surprised: #8d7bf0;
+  --cat-surprised-soft: #eae9fc;
+  --cat-love: #f06d80;
+  --cat-love-soft: #fde1e6;
+  --cat-greeting: #2faa86;
+  --cat-greeting-soft: #d9f1ea;
+  --cat-apology: #6f7c98;
+  --cat-apology-soft: #e8ecf3;
+
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Centered page shell with responsive gutters. */
+.shell {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .shell {
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .shell {
+    padding-inline: 2rem;
+  }
+}
+
+/*
+ * Kaomoji glyphs lean on the full font stack so katakana/symbols
+ * (ﾉ ▽ Σ etc.) never fall back to tofu boxes.
+ */
+.kaomoji-glyph {
+  font-family: var(--font-sans);
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
