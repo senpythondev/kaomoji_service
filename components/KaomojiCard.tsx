@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { Kaomoji } from "@/data/kaomoji";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, type CategorySlug } from "@/lib/categories";
 import { useToast } from "./ToastProvider";
 import { CheckIcon, CopyIcon } from "./icons";
 
@@ -31,11 +31,19 @@ async function copyText(text: string) {
   document.body.removeChild(ta);
 }
 
-export function KaomojiCard({ kaomoji }: { kaomoji: Kaomoji }) {
+export function KaomojiCard({
+  kaomoji,
+  categorySlug,
+}: {
+  kaomoji: Kaomoji;
+  /** Override the tint/label (e.g. force the current category page's theme). */
+  categorySlug?: CategorySlug;
+}) {
   const toast = useToast();
   const [copied, setCopied] = useState(false);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const category = CATEGORIES[kaomoji.categories[0]] ?? CATEGORIES.happy;
+  const category =
+    CATEGORIES[categorySlug ?? kaomoji.categories[0]] ?? CATEGORIES.happy;
 
   async function handleCopy() {
     await copyText(kaomoji.text);
