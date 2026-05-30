@@ -7,6 +7,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { CategoryTiles } from "@/components/CategoryTiles";
 import { KaomojiGrid } from "@/components/KaomojiGrid";
 import { FeedbackForm } from "@/components/FeedbackForm";
+import { HeroBackdrop } from "@/components/HeroBackdrop";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -41,8 +42,9 @@ export default function HomePage() {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-b from-primary-soft via-primary-soft/40 to-white">
-        <div className="shell grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-20">
+      <section className="relative isolate overflow-hidden">
+        <HeroBackdrop />
+        <div className="shell relative z-10 grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-20">
           <div className="order-2 text-center lg:order-1 lg:text-left">
             <Mascot
               size={72}
