@@ -58,6 +58,47 @@ Japanese characters; if a tool has trouble with that path, rename it to ASCII (e
 - Keep v1 lean. Prefer simple over clever. Ask the PM before adding heavy dependencies
   or changing the framework.
 
+## SEO scaling strategy (how we win broad discoverability)
+Goal: be discoverable across a **wide spectrum** of Japanese search terms. The correct way
+to achieve breadth is **many focused pages**, NOT many keywords per page.
+
+**HARD RULE — never keyword-stuff.** Do not list keywords in text, meta tags, hidden
+elements, alt text, or repeated phrases. Modern Google penalizes this and it would suppress
+the whole site. Every page is written for humans first. One page = one clear search intent.
+If asked to "add more keywords," achieve it by adding **pages** or natural synonyms, never by
+cramming terms onto a page.
+
+Breadth comes from three layers:
+1. **More category pages** — one page per keyword cluster, each cleanly targeting one intent:
+   e.g. かわいい顔文字 / 怒る顔文字 / 泣く顔文字 / 動物顔文字 / お祝い顔文字 / ありがとう・お礼 /
+   謝罪・ごめん, etc. Add categories to grow coverage; each gets unique title, intro, and theme.
+2. **Detail pages `/kaomoji/[id]`** — the long-tail engine and the single biggest lever for
+   "as many search terms as possible." One SSG page per kaomoji; hundreds of them can rank for
+   very specific queries no category page will. Each: unique title, short unique description,
+   usage example, variations, related links.
+3. **Vocabulary coverage via data, not stuffing** — use the `tags` and `reading` fields so each
+   kaomoji carries the natural ways people search the same idea (顔文字／かおもじ／kaomoji,
+   コピペ／コピー, 絵文字／emoji, conversational terms like 会話・チャット・SNS). On-site search
+   uses these; page titles/intros use the **one natural variant** a real person would type.
+
+**Per-page SEO requirements (every indexable page):**
+- Unique, natural Japanese `<title>` and `<meta description>` — never templated word-swaps.
+- Exactly one keyword-relevant H1; sensible heading hierarchy.
+- Self-referencing canonical.
+- JSON-LD structured data where it fits (BreadcrumbList on category/detail; ItemList optional).
+- Strong internal linking (related categories, related kaomoji, breadcrumbs).
+- Fast: SSG, no layout shift, no heavy assets — Core Web Vitals are a ranking factor.
+- Unique body copy per page (esp. category intros) — near-duplicate pages get discounted.
+
+**Honest expectation (do not over-promise in copy or code):** a new domain ranks slowly.
+Target the long tail first (specific, low-competition queries); head terms like 顔文字 come
+later, with real usage and links over months. The winning play is hundreds of clean, fast,
+genuinely useful pages — not aggressive optimization of a few.
+
+**Sequencing:** core pages first (category template, search), THEN an SEO scaling pass:
+detail-page layer → more category clusters → synonym/tag vocabulary → sitemap.xml + robots.txt
+→ register Google Search Console + Bing Webmaster Tools.
+
 ## Tech stack — v1 (build this)
 - **Framework:** Next.js (App Router) + React + **TypeScript**
 - **Styling:** Tailwind CSS. No Visily Tailwind/CSS export is available (free tier), so
