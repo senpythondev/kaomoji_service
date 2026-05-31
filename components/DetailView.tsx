@@ -4,12 +4,12 @@ import {
   detailHref,
   getCategoryMeta,
   getContentByCategory,
-  glyphClass,
   unitNoun,
 } from "@/lib/content";
 import { SITE } from "@/lib/site";
 import { Breadcrumb } from "./Breadcrumb";
 import { CopyButton } from "./CopyButton";
+import { Glyph } from "./Glyph";
 import { ChevronRightIcon } from "./icons";
 
 /**
@@ -19,7 +19,6 @@ import { ChevronRightIcon } from "./icons";
  */
 export function DetailView({ item }: { item: ContentItem }) {
   const unit = unitNoun(item.kind);
-  const gClass = glyphClass(item.kind);
   const primaryCategory = item.categories?.[0];
   const meta = getCategoryMeta(primaryCategory);
   const categoryHref = meta ? `/kaomoji/${meta.slug}` : "/#categories";
@@ -81,17 +80,16 @@ export function DetailView({ item }: { item: ContentItem }) {
               {meta.label}
             </Link>
           )}
-          <p
-            className={`${gClass} mt-5 ${
+          <Glyph
+            text={item.text}
+            className={`mt-5 block ${
               item.kind === "emoji"
                 ? "text-7xl sm:text-8xl"
                 : item.kind === "combo"
                   ? "text-3xl text-ink sm:text-4xl"
                   : "text-4xl font-medium text-ink sm:text-5xl"
             }`}
-          >
-            {item.text}
-          </p>
+          />
           <div className="mt-7">
             <CopyButton text={item.text} />
           </div>
@@ -99,7 +97,7 @@ export function DetailView({ item }: { item: ContentItem }) {
 
         <div className="mt-8 max-w-2xl">
           <h1 className="text-2xl font-extrabold leading-tight text-ink sm:text-3xl">
-            <span className={`${gClass} mr-2`}>{item.text}</span>
+            <Glyph text={item.text} className="mr-2 inline" />
             「{item.reading}」の{unit}
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-ink-soft sm:text-base">
@@ -156,13 +154,12 @@ export function DetailView({ item }: { item: ContentItem }) {
                     href={detailHref(r)}
                     className="flex aspect-square flex-col items-center justify-center gap-1 rounded-2xl border border-hairline bg-white p-2 text-center transition hover:-translate-y-0.5 hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
-                    <span
-                      className={`${glyphClass(r.kind)} ${
+                    <Glyph
+                      text={r.text}
+                      className={
                         r.kind === "emoji" ? "text-3xl" : "text-sm font-medium text-ink"
-                      }`}
-                    >
-                      {r.text}
-                    </span>
+                      }
+                    />
                     <span className="line-clamp-1 text-[11px] text-ink-faint">
                       {r.reading}
                     </span>

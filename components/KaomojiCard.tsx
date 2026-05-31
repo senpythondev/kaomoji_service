@@ -6,11 +6,11 @@ import {
   type ContentItem,
   detailHref,
   getCategoryMeta,
-  glyphClass,
   unitNoun,
 } from "@/lib/content";
 import { copyText } from "@/lib/clipboard";
 import { useToast } from "./ToastProvider";
+import { Glyph } from "./Glyph";
 import { CheckIcon, ChevronRightIcon, CopyIcon } from "./icons";
 
 /**
@@ -59,9 +59,7 @@ export function KaomojiCard({
         className="flex aspect-[5/4] w-full flex-col justify-between rounded-card p-3 text-left ring-1 ring-black/[0.03] shadow-soft transition duration-200 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         <span className="flex flex-1 items-center justify-center px-1">
-          <span className={`${glyphClass(kaomoji.kind)} text-center ${sizeClass}`}>
-            {kaomoji.text}
-          </span>
+          <Glyph text={kaomoji.text} className={`text-center ${sizeClass}`} />
         </span>
         <span className="flex items-center justify-between gap-2">
           <span className="rounded-full bg-white/70 px-2 py-0.5 text-[11px] font-medium text-ink-soft">

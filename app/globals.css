@@ -166,18 +166,11 @@ body {
 }
 
 /*
- * Combo items contain BOTH a kaomoji part and emoji part(s). KaomojiText (first)
- * renders the line-art glyphs; the color-emoji fonts (next, BEFORE any
- * monochrome symbol font) render the emoji in color. JP fallbacks last.
+ * Combos are split per-character (components/Glyph.tsx): the kaomoji run renders
+ * with .kaomoji-glyph and the emoji run with .emoji-glyph (color-only). There is
+ * deliberately no mixed "combo" font stack — emoji must never share a stack with
+ * the kaomoji subset or any monochrome font.
  */
-.combo-glyph {
-  font-family: "KaomojiText", "Apple Color Emoji", "Segoe UI Emoji",
-    "Noto Color Emoji", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
-  font-variant-emoji: emoji;
-  line-height: 1.4;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-}
 
 @media (prefers-reduced-motion: reduce) {
   *,

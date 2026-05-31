@@ -52,14 +52,9 @@ export function unitNoun(kind: ContentKind): string {
   return kind === "emoji" ? "絵文字" : kind === "combo" ? "コンボ" : "顔文字";
 }
 
-/** CSS class that renders a kind's glyph correctly. */
-export function glyphClass(kind: ContentKind): string {
-  return kind === "emoji"
-    ? "emoji-glyph"
-    : kind === "combo"
-      ? "combo-glyph"
-      : "kaomoji-glyph";
-}
+// Glyph rendering is handled per-character by components/Glyph.tsx, which puts
+// emoji runs in .emoji-glyph (color-only) and kaomoji runs in .kaomoji-glyph —
+// so emoji never inherit a mixed/monochrome stack.
 
 /** The one unified collection. */
 export const ALL_ITEMS: ContentItem[] = [...KAOMOJI, ...EMOJI, ...COMBOS];
