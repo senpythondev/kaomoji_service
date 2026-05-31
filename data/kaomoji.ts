@@ -17,23 +17,19 @@
  * readability; `KAOMOJI` is the flat list the rest of the app consumes.
  */
 import type { CategorySlug } from "@/lib/categories";
+import type { ContentItem } from "@/lib/content";
 
-export interface Kaomoji {
-  id: string;
-  /** The kaomoji itself. */
-  text: string;
+/** A kaomoji is a ContentItem narrowed to type "kaomoji" + kaomoji categories. */
+export interface Kaomoji extends Omit<ContentItem, "type" | "categories"> {
+  type: "kaomoji";
   categories: CategorySlug[];
-  /** Freeform Japanese keywords powering search. */
-  tags: string[];
-  /** かな/ひらがな yomi for Japanese search. */
-  reading: string;
-  popularity: number;
-  /** ISO date. */
-  createdAt: string;
 }
 
+/** Authoring shape — `type` is injected when the flat list is assembled. */
+type KaomojiSeed = Omit<Kaomoji, "type">;
+
 // ── happy / うれしい ────────────────────────────────────────
-const HAPPY: Kaomoji[] = [
+const HAPPY: KaomojiSeed[] = [
   { id: "happy-niko", text: "(*^ω^*)", categories: ["happy"], tags: ["うれしい", "笑顔", "にこにこ", "喜び"], reading: "にこにこ", popularity: 98, createdAt: "2025-09-12" },
   { id: "happy-banzai", text: "＼(^o^)／", categories: ["happy"], tags: ["万歳", "ばんざい", "喜び", "やったー"], reading: "ばんざい", popularity: 95, createdAt: "2025-09-20" },
   { id: "happy-nikkori", text: "(´▽`)", categories: ["happy"], tags: ["ほっと", "笑顔", "にっこり", "安心"], reading: "にっこり", popularity: 80, createdAt: "2026-02-02" },
@@ -72,7 +68,7 @@ const HAPPY: Kaomoji[] = [
 ];
 
 // ── cute / かわいい ─────────────────────────────────────────
-const CUTE: Kaomoji[] = [
+const CUTE: KaomojiSeed[] = [
   { id: "cute-neko", text: "(=^・ω・^=)", categories: ["cute"], tags: ["ねこ", "かわいい", "猫", "にゃー"], reading: "ねこ", popularity: 88, createdAt: "2025-10-05" },
   { id: "cute-koneko", text: "(｡･ω･｡)", categories: ["cute"], tags: ["かわいい", "小さい", "うるうる"], reading: "かわいい", popularity: 85, createdAt: "2026-03-15" },
   { id: "cute-tere", text: "(*´ω`*)", categories: ["cute", "happy"], tags: ["照れ", "かわいい", "てれ", "ぽっ"], reading: "てれ", popularity: 82, createdAt: "2026-05-10" },
@@ -109,7 +105,7 @@ const CUTE: Kaomoji[] = [
 ];
 
 // ── sad / 悲しい ────────────────────────────────────────────
-const SAD: Kaomoji[] = [
+const SAD: KaomojiSeed[] = [
   { id: "sad-naku", text: "(T_T)", categories: ["sad"], tags: ["泣く", "悲しい", "なみだ", "号泣"], reading: "なく", popularity: 92, createdAt: "2025-09-30" },
   { id: "sad-namida", text: "(；_；)", categories: ["sad"], tags: ["泣く", "涙", "うるうる", "悲しい"], reading: "なみだ", popularity: 84, createdAt: "2026-02-20" },
   { id: "sad-goukyuu", text: "(´；ω；`)", categories: ["sad"], tags: ["号泣", "悲しい", "ぐすん", "なみだ"], reading: "ごうきゅう", popularity: 78, createdAt: "2026-04-30" },
@@ -148,7 +144,7 @@ const SAD: Kaomoji[] = [
 ];
 
 // ── angry / 怒る ────────────────────────────────────────────
-const ANGRY: Kaomoji[] = [
+const ANGRY: KaomojiSeed[] = [
   { id: "angry-okoru", text: "(｀Д´)", categories: ["angry"], tags: ["怒る", "プンプン", "おこ", "むっ"], reading: "おこる", popularity: 72, createdAt: "2025-10-22" },
   { id: "angry-gekido", text: "ヽ(｀Д´)ﾉ", categories: ["angry"], tags: ["激怒", "怒る", "キレる"], reading: "げきど", popularity: 68, createdAt: "2026-03-03" },
   { id: "angry-iraira", text: "(#｀д´)", categories: ["angry"], tags: ["イライラ", "怒る", "むかむか"], reading: "いらいら", popularity: 58, createdAt: "2026-05-06" },
@@ -186,7 +182,7 @@ const ANGRY: Kaomoji[] = [
 ];
 
 // ── surprised / 驚き ───────────────────────────────────────
-const SURPRISED: Kaomoji[] = [
+const SURPRISED: KaomojiSeed[] = [
   { id: "surprised-bikkuri", text: "Σ(ﾟДﾟ)", categories: ["surprised"], tags: ["驚き", "びっくり", "ガーン", "衝撃"], reading: "びっくり", popularity: 86, createdAt: "2025-12-01" },
   { id: "surprised-odoroku", text: "(°o°)", categories: ["surprised"], tags: ["驚く", "おどろき", "ぽかん"], reading: "おどろく", popularity: 64, createdAt: "2026-03-27" },
   { id: "surprised-shougeki", text: "Σ(O_O)", categories: ["surprised"], tags: ["衝撃", "驚き", "えっ"], reading: "しょうげき", popularity: 62, createdAt: "2026-05-24" },
@@ -223,7 +219,7 @@ const SURPRISED: Kaomoji[] = [
 ];
 
 // ── love / 愛・好き ─────────────────────────────────────────
-const LOVE: Kaomoji[] = [
+const LOVE: KaomojiSeed[] = [
   { id: "love-suki", text: "(´∀`)♡", categories: ["love", "happy"], tags: ["好き", "愛", "ハート", "らぶ"], reading: "すき", popularity: 89, createdAt: "2025-10-15" },
   { id: "love-daisuki", text: "(*♥ω♥*)", categories: ["love"], tags: ["大好き", "恋", "ハート目", "メロメロ"], reading: "だいすき", popularity: 83, createdAt: "2026-02-14" },
   { id: "love-chu", text: "(＾３＾)♡", categories: ["love"], tags: ["キス", "ちゅー", "好き"], reading: "ちゅー", popularity: 71, createdAt: "2026-05-02" },
@@ -260,7 +256,7 @@ const LOVE: Kaomoji[] = [
 ];
 
 // ── greeting / 挨拶・お礼 ───────────────────────────────────
-const GREETING: Kaomoji[] = [
+const GREETING: KaomojiSeed[] = [
   { id: "greeting-yaa", text: "(・∀・)ノ", categories: ["greeting"], tags: ["挨拶", "やあ", "おーい", "こんにちは"], reading: "やあ", popularity: 74, createdAt: "2025-11-25" },
   { id: "greeting-konnichiwa", text: "(^_^)/", categories: ["greeting"], tags: ["こんにちは", "手を振る", "あいさつ", "バイバイ"], reading: "こんにちは", popularity: 69, createdAt: "2026-03-19" },
   { id: "greeting-ojigi", text: "m(_ _)m", categories: ["greeting", "apology"], tags: ["お礼", "ありがとう", "お辞儀", "よろしく", "ごめん"], reading: "おじぎ", popularity: 81, createdAt: "2026-05-28" },
@@ -298,7 +294,7 @@ const GREETING: Kaomoji[] = [
 ];
 
 // ── apology / 謝る ─────────────────────────────────────────
-const APOLOGY: Kaomoji[] = [
+const APOLOGY: KaomojiSeed[] = [
   { id: "apology-gomen", text: "(>_<)", categories: ["apology", "sad"], tags: ["ごめん", "謝る", "ごめんなさい", "ぴえん"], reading: "ごめん", popularity: 67, createdAt: "2026-01-09" },
   { id: "apology-hiraayamari", text: "ﾍ(_ _ﾍ)", categories: ["apology"], tags: ["平謝り", "お辞儀", "土下座", "謝る"], reading: "ひらあやまり", popularity: 48, createdAt: "2026-05-15" },
   { id: "apology-03", text: "m(._.)m", categories: ["apology"], tags: ["ごめんなさい", "謝る", "お詫び", "すみません"], reading: "ごめんなさい", popularity: 75, createdAt: "2025-07-06" },
@@ -329,7 +325,7 @@ const APOLOGY: Kaomoji[] = [
   { id: "apology-28", text: "(_ _。)", categories: ["apology"], tags: ["反省", "しょんぼり", "ごめん"], reading: "はんせい", popularity: 45, createdAt: "2025-10-12" },
 ];
 
-/** Flat list consumed by the rest of the app. */
+/** Flat list consumed by the rest of the app (each tagged type "kaomoji"). */
 export const KAOMOJI: Kaomoji[] = [
   ...HAPPY,
   ...CUTE,
@@ -339,7 +335,7 @@ export const KAOMOJI: Kaomoji[] = [
   ...LOVE,
   ...GREETING,
   ...APOLOGY,
-];
+].map((k) => ({ ...k, type: "kaomoji" as const }));
 
 /** All kaomoji. */
 export function getAllKaomoji(): Kaomoji[] {

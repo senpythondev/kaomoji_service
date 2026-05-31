@@ -115,6 +115,18 @@ body {
   overflow-wrap: anywhere;
 }
 
+/*
+ * Emoji (絵文字) render with the platform COLOR-emoji font — never the kaomoji
+ * subset or a bundled font. font-variant-emoji forces color presentation where
+ * supported so dual-use symbols don't render as monochrome glyphs.
+ */
+.emoji-glyph {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+    sans-serif;
+  font-variant-emoji: emoji;
+  line-height: 1.2;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

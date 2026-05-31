@@ -1,25 +1,27 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Kaomoji } from "@/data/kaomoji";
-import type { CategorySlug } from "@/lib/categories";
+import type { ContentItem } from "@/lib/content";
 import { KaomojiCard } from "./KaomojiCard";
 
 type SortKey = "popular" | "newest";
 
 /**
- * Category kaomoji grid with client-side sort (人気順 / 新着順, default 人気順).
- * `items` arrive in popularity order, so the server-rendered HTML (the SEO
- * payload) already lists every kaomoji; the pills only reorder on the client.
+ * Category grid with client-side sort (人気順 / 新着順, default 人気順). `items`
+ * arrive in popularity order, so the server-rendered HTML (the SEO payload)
+ * already lists everything; the pills only reorder on the client. Works for
+ * both kaomoji and emoji (set `unit` to 顔文字 / 絵文字).
  */
 export function CategoryKaomojiList({
   items,
   categorySlug,
   label,
+  unit,
 }: {
-  items: Kaomoji[];
-  categorySlug: CategorySlug;
+  items: ContentItem[];
+  categorySlug: string;
   label: string;
+  unit: string;
 }) {
   const [sort, setSort] = useState<SortKey>("popular");
 
@@ -38,7 +40,8 @@ export function CategoryKaomojiList({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-ink-soft">
           全<span className="font-bold text-ink">{items.length}</span>件の
-          {label}顔文字
+          {label}
+          {unit}
         </p>
         <div
           role="group"
@@ -55,9 +58,9 @@ export function CategoryKaomojiList({
       </div>
 
       <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
-        {sorted.map((k) => (
-          <li key={k.id}>
-            <KaomojiCard kaomoji={k} categorySlug={categorySlug} />
+        {sorted.map((item) => (
+          <li key={item.id}>
+            <KaomojiCard kaomoji={item} categorySlug={categorySlug} />
           </li>
         ))}
       </ul>

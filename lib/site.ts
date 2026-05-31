@@ -13,7 +13,7 @@ export const SITE = {
   description:
     "うれしい・かわいい・悲しいなどの顔文字をワンクリックでコピー。スマホでもすぐ使える、無料の顔文字コピペサイトです。",
   /** Used for metadataBase / canonical URLs. Update when the domain is finalized. */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://kaomoji-palette.example",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://kaomoji-palette.com",
 } as const;
 
 export interface NavItem {
@@ -25,6 +25,7 @@ export interface NavItem {
 export const TOP_NAV: NavItem[] = [
   { label: "ホーム", href: "/" },
   { label: "カテゴリ", href: "/#categories" },
+  { label: "絵文字", href: "/emoji" },
   { label: "人気の顔文字", href: "/#popular" },
   { label: "運営者情報", href: "/about" },
 ];
@@ -49,6 +50,7 @@ export const FOOTER_LINKS: { heading: string; items: NavItem[] }[] = [
     heading: "サイト",
     items: [
       { label: "ホーム", href: "/" },
+      { label: "絵文字一覧", href: "/emoji" },
       { label: "人気の顔文字", href: "/#popular" },
       { label: "顔文字を検索", href: "/search" },
     ],

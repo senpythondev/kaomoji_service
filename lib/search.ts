@@ -9,7 +9,7 @@
  *   - katakana → hiragana (カワイイ matches かわいい)
  *   - a romaji rendering of the reading and kana tags (kawaii / arigatou)
  */
-import { KAOMOJI, type Kaomoji } from "@/data/kaomoji";
+import { ALL_CONTENT, type ContentItem } from "@/lib/content";
 
 /** NFKC + lowercase + trim, with katakana folded to hiragana. */
 export function normalize(input: string): string {
@@ -83,19 +83,20 @@ function toRomaji(hira: string): string {
 }
 
 interface IndexEntry {
-  kaomoji: Kaomoji;
+  item: ContentItem;
   haystack: string;
   /** Normalized tags + reading for relevance scoring. */
   exact: string[];
 }
 
-const INDEX: IndexEntry[] = KAOMOJI.map((k) => {
-  const exact = [...k.tags, k.reading].map(normalize);
-  const base = normalize([k.text, ...k.tags, k.reading].join(" "));
-  const romaji = [k.reading, ...k.tags]
+// Index both kaomoji and emoji so search returns both.
+const INDEX: IndexEntry[] = ALL_CONTENT.map((item) => {
+  const exact = [...item.tags, item.reading].map(normalize);
+  const base = normalize([item.text, ...item.tags, item.reading].join(" "));
+  const romaji = [item.reading, ...item.tags]
     .map((s) => toRomaji(normalize(s)))
     .join(" ");
-  return { kaomoji: k, haystack: `${base} ${romaji}`, exact };
+  return { item, haystack: `${base} ${romaji}`, exact };
 });
 
 function relevance(entry: IndexEntry, q: string): number {
@@ -109,7 +110,7 @@ function relevance(entry: IndexEntry, q: string): number {
  * term must be present), ranked by relevance then popularity. An empty query
  * returns an empty array — callers decide what to show instead.
  */
-export function searchKaomoji(query: string): Kaomoji[] {
+export function searchKaomoji(query: string): ContentItem[] {
   const q = normalize(query);
   if (!q) return [];
   const terms = q.split(/\s+/).filter(Boolean);
@@ -118,7 +119,7 @@ export function searchKaomoji(query: string): Kaomoji[] {
     .sort(
       (a, b) =>
         relevance(b, q) - relevance(a, q) ||
-        b.kaomoji.popularity - a.kaomoji.popularity,
+        b.item.popularity - a.item.popularity,
     )
-    .map((entry) => entry.kaomoji);
+    .map((entry) => entry.item);
 }

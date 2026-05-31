@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/check-font-coverage.mjs && next build",
+    "build": "node scripts/check-font-coverage.mjs && node scripts/check-emoji.mjs && next build",
     "start": "next start",
     "lint": "eslint",
     "check:fonts": "node scripts/check-font-coverage.mjs",
+    "check:emoji": "node scripts/check-emoji.mjs",
     "build:font": "node scripts/build-subset-font.mjs"
   },
   "dependencies": {
