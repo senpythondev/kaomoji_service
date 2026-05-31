@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_JP } from "next/font/google";
+import { preload } from "react-dom";
 import "./globals.css";
 import { SITE } from "@/lib/site";
 import { Header } from "@/components/Header";
@@ -64,6 +65,14 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Preload the self-hosted kaomoji subset (primary face) to avoid FOUT on the
+  // glyph-heavy card grids.
+  preload("/fonts/kaomoji-subset.woff2", {
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "anonymous",
+  });
+
   return (
     <html lang="ja" className={`${notoSansJP.variable} h-full`}>
       <body className="flex min-h-dvh flex-col pb-[calc(72px+env(safe-area-inset-bottom))] md:pb-0">

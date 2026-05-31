@@ -1,14 +1,28 @@
 @import "tailwindcss";
 
 /*
+ * Self-hosted Noto Sans JP SUBSET, covering exactly the glyphs the kaomoji
+ * dataset uses (see scripts/). Placed first in --font-sans so kaomoji never
+ * depend on the visitor's OS fonts (the cause of the tofu-box bug). The build
+ * fails if any used glyph is missing (scripts/check-font-coverage.mjs).
+ */
+@font-face {
+  font-family: "KaomojiText";
+  src: url("/fonts/kaomoji-subset.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
  * Kaomoji Palette design tokens.
  * Palette derived from the Visily mockups in /designs:
  * white surfaces, soft sky-blue primary, warm peach-pink accent, charcoal ink,
  * rounded cards and gentle shadows.
  */
 @theme {
-  --font-sans: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic",
-    system-ui, "Segoe UI Symbol", sans-serif;
+  --font-sans: "KaomojiText", var(--font-noto-sans-jp), "Hiragino Sans",
+    "Yu Gothic", system-ui, "Segoe UI Symbol", sans-serif;
 
   /* Brand */
   --color-primary: #3d8bf0;

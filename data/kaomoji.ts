@@ -1,14 +1,14 @@
 /**
  * Seed kaomoji dataset (UTF-8).
  *
- * RENDER-SAFETY: every entry uses only glyphs that display correctly on iOS,
- * Android, and Windows — basic ASCII, Latin-1 marks (´ ° · ¬ º), common CJK
- * punctuation, hiragana/katakana (incl. halfwidth ﾟ ﾉ ヽ), Greek (ω ε Σ ∀),
- * Cyrillic (Д д з), safe math/geometry (∩ ∠ ≧ ≦ ● ○ ◎ ▽ △ • ☆ ★ ♪ ♡ ♥),
- * and a few safe kanji used as features (人 益 皿). Box-like / exotic symbols
- * (the literal □ tofu square, ◇ ◕ ‿ combining diacritics, and non-CJK scripts)
- * are deliberately avoided so nothing falls back to a tofu box. A scan enforces
- * this allowlist over every `text`.
+ * RENDER-SAFETY: kaomoji glyphs are served from a self-hosted Noto Sans JP
+ * SUBSET placed first in the font stack (see app/globals.css), so rendering no
+ * longer depends on the visitor's OS fonts. Every codepoint used here MUST be
+ * present in that bundled subset — `scripts/check-font-coverage.mjs` verifies
+ * this and FAILS the build otherwise (run `node scripts/build-subset-font.mjs`
+ * to regenerate the subset after adding glyphs). If a glyph isn't available in
+ * Noto Sans JP (e.g. the IPA brackets ʕ ʔ), replace it with a covered
+ * equivalent rather than relying on fallback fonts.
  *
  * Tags are honest, intent-level search words (emotion / scene / synonym) — not
  * padded with generic terms. `reading` is the kana yomi powering Japanese search.
@@ -84,8 +84,8 @@ const CUTE: Kaomoji[] = [
   { id: "cute-09", text: "(*≧ω≦*)", categories: ["cute"], tags: ["かわいい", "うれしい", "照れ"], reading: "かわいい", popularity: 73, createdAt: "2025-11-19" },
   { id: "cute-10", text: "(´ω`*)", categories: ["cute"], tags: ["ほのぼの", "かわいい", "まったり"], reading: "ほのぼの", popularity: 62, createdAt: "2025-12-22" },
   { id: "cute-11", text: "ヽ(=^･ω･^=)ﾉ", categories: ["cute"], tags: ["ねこ", "猫", "かわいい", "はしゃぐ"], reading: "ねこ", popularity: 68, createdAt: "2026-01-15" },
-  { id: "cute-12", text: "ʕ•ω•ʔ", categories: ["cute"], tags: ["くま", "かわいい", "動物", "クマ"], reading: "くま", popularity: 80, createdAt: "2026-02-27" },
-  { id: "cute-13", text: "ʕ´•ω•`ʔ", categories: ["cute"], tags: ["くま", "かわいい", "ほのぼの"], reading: "くま", popularity: 67, createdAt: "2026-03-30" },
+  { id: "cute-12", text: "(=•ω•=)", categories: ["cute"], tags: ["ねこ", "かわいい", "猫", "にゃー"], reading: "ねこ", popularity: 80, createdAt: "2026-02-27" },
+  { id: "cute-13", text: "(´•ω•`)", categories: ["cute"], tags: ["かわいい", "ほのぼの", "うるうる"], reading: "ほのぼの", popularity: 67, createdAt: "2026-03-30" },
   { id: "cute-14", text: "(｡♥ω♥｡)", categories: ["cute", "love"], tags: ["かわいい", "ときめき", "大好き"], reading: "ときめき", popularity: 75, createdAt: "2026-04-20" },
   { id: "cute-15", text: "(´｡• ω •｡`)", categories: ["cute"], tags: ["かわいい", "うるうる", "ほのぼの"], reading: "うるうる", popularity: 71, createdAt: "2026-05-03" },
   { id: "cute-16", text: "(・×・)", categories: ["cute"], tags: ["かわいい", "どうぶつ", "てへ"], reading: "てへ", popularity: 54, createdAt: "2025-06-25" },
@@ -102,7 +102,7 @@ const CUTE: Kaomoji[] = [
   { id: "cute-27", text: "(=^.^=)", categories: ["cute"], tags: ["ねこ", "猫", "にっこり", "かわいい"], reading: "ねこ", popularity: 64, createdAt: "2026-02-05" },
   { id: "cute-28", text: "(・ω・)b", categories: ["cute"], tags: ["いいね", "かわいい", "グッド"], reading: "いいね", popularity: 53, createdAt: "2026-03-12" },
   { id: "cute-29", text: "(*･ω･*)", categories: ["cute"], tags: ["かわいい", "うるうる", "おねがい"], reading: "うるうる", popularity: 60, createdAt: "2026-04-16" },
-  { id: "cute-30", text: "ʕ-ω-ʔ", categories: ["cute"], tags: ["くま", "かわいい", "動物", "ねむい"], reading: "くま", popularity: 50, createdAt: "2025-08-07" },
+  { id: "cute-30", text: "(=・ω・=)", categories: ["cute"], tags: ["ねこ", "猫", "かわいい", "まったり"], reading: "ねこ", popularity: 50, createdAt: "2025-08-07" },
   { id: "cute-31", text: "(=ﾟωﾟ=)", categories: ["cute"], tags: ["ねこ", "猫", "きょとん", "かわいい"], reading: "ねこ", popularity: 55, createdAt: "2026-05-20" },
   { id: "cute-32", text: "(uωu)", categories: ["cute"], tags: ["すやすや", "ねむい", "しあわせ"], reading: "すやすや", popularity: 51, createdAt: "2026-01-22" },
   { id: "cute-33", text: "(*ﾟoﾟ)", categories: ["cute"], tags: ["きょとん", "かわいい", "ぽかん"], reading: "きょとん", popularity: 49, createdAt: "2025-09-27" },
