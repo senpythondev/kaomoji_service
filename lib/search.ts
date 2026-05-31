@@ -9,7 +9,7 @@
  *   - katakana → hiragana (カワイイ matches かわいい)
  *   - a romaji rendering of the reading and kana tags (kawaii / arigatou)
  */
-import { ALL_CONTENT, type ContentItem } from "@/lib/content";
+import { ALL_ITEMS, type ContentItem } from "@/lib/content";
 
 /** NFKC + lowercase + trim, with katakana folded to hiragana. */
 export function normalize(input: string): string {
@@ -90,7 +90,7 @@ interface IndexEntry {
 }
 
 // Index both kaomoji and emoji so search returns both.
-const INDEX: IndexEntry[] = ALL_CONTENT.map((item) => {
+const INDEX: IndexEntry[] = ALL_ITEMS.map((item) => {
   const exact = [...item.tags, item.reading].map(normalize);
   const base = normalize([item.text, ...item.tags, item.reading].join(" "));
   const romaji = [item.reading, ...item.tags]

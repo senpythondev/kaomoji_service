@@ -6,6 +6,7 @@ import {
   type ContentItem,
   detailHref,
   getCategoryMeta,
+  glyphClass,
   unitNoun,
 } from "@/lib/content";
 import { copyText } from "@/lib/clipboard";
@@ -13,9 +14,9 @@ import { useToast } from "./ToastProvider";
 import { CheckIcon, ChevronRightIcon, CopyIcon } from "./icons";
 
 /**
- * Card for a kaomoji OR emoji. Tapping the card copies + toasts; a small corner
- * link opens the item's detail page. Emoji render with the platform color-emoji
- * font (.emoji-glyph); kaomoji use the self-hosted subset (.kaomoji-glyph).
+ * Card for any library item — kaomoji, emoji, or combo. Tapping copies + toasts;
+ * a small corner link opens the detail page. The glyph class is chosen by kind:
+ * kaomoji → subset font, emoji → color-emoji font, combo → both.
  */
 export function KaomojiCard({
   kaomoji,
@@ -29,10 +30,16 @@ export function KaomojiCard({
   const [copied, setCopied] = useState(false);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const isEmoji = kaomoji.type === "emoji";
-  const meta = getCategoryMeta(kaomoji.type, categorySlug ?? kaomoji.categories[0]);
+  const meta = getCategoryMeta(categorySlug ?? kaomoji.categories[0]);
   const softVar = meta?.softVar ?? "var(--color-surface-tint)";
-  const label = meta?.label ?? unitNoun(kaomoji.type);
+  const label = meta?.label ?? unitNoun(kaomoji.kind);
+
+  const sizeClass =
+    kaomoji.kind === "emoji"
+      ? "text-4xl sm:text-[2.75rem]"
+      : kaomoji.kind === "combo"
+        ? "text-lg font-medium text-ink sm:text-xl"
+        : "text-xl font-medium text-ink sm:text-2xl";
 
   async function handleCopy() {
     await copyText(kaomoji.text);
@@ -47,18 +54,12 @@ export function KaomojiCard({
       <button
         type="button"
         onClick={handleCopy}
-        aria-label={`${unitNoun(kaomoji.type)} ${kaomoji.text} をコピー`}
+        aria-label={`${unitNoun(kaomoji.kind)} ${kaomoji.text} をコピー`}
         style={{ backgroundColor: softVar }}
         className="flex aspect-[5/4] w-full flex-col justify-between rounded-card p-3 text-left ring-1 ring-black/[0.03] shadow-soft transition duration-200 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         <span className="flex flex-1 items-center justify-center px-1">
-          <span
-            className={
-              isEmoji
-                ? "emoji-glyph text-center text-4xl sm:text-[2.75rem]"
-                : "kaomoji-glyph text-center text-xl font-medium text-ink sm:text-2xl"
-            }
-          >
+          <span className={`${glyphClass(kaomoji.kind)} text-center ${sizeClass}`}>
             {kaomoji.text}
           </span>
         </span>

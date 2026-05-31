@@ -163,5 +163,48 @@ export function CategoryIcon({
           <path d="M5.5 20c.8-4.2 3.2-6.4 6.5-6.4S17.7 15.8 18.5 20" />
         </Svg>
       );
+    case "animal":
+      // paw print
+      return (
+        <Svg {...props}>
+          <circle cx="6" cy="11" r="1.7" />
+          <circle cx="10" cy="7.5" r="1.7" />
+          <circle cx="14" cy="7.5" r="1.7" />
+          <circle cx="18" cy="11" r="1.7" />
+          <path d="M8 17.5c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5-1.8 3-4 3-4-.8-4-3z" />
+        </Svg>
+      );
+    case "food":
+      // apple
+      return (
+        <Svg {...props}>
+          <path d="M12 8c-1.5-1.5-5-1.4-6.3 1.2C4 12 5.5 19 9 20c1 .3 2-.4 3-.4s2 .7 3 .4c3.5-1 5-8 3.3-10.8C17 6.6 13.5 6.5 12 8z" />
+          <path d="M12 8c0-2 1-3.4 3-3.8" />
+        </Svg>
+      );
+    case "celebration":
+      // party popper
+      return (
+        <Svg {...props}>
+          <path d="M3 21l5.5-13 7.5 7.5z" />
+          <path d="M15 3.5v2M19 5l-1.4 1.4M20.5 9.5h-2M15 9c2 0 3.5 1.5 3.5 3.5" />
+        </Svg>
+      );
+    case "nature":
+      // flower
+      return (
+        <Svg {...props}>
+          <circle cx="12" cy="12" r="2.4" />
+          <path d="M12 9.6V5M12 14.4V19M9.6 12H5M14.4 12H19M10.3 10.3 7.5 7.5M13.7 13.7l2.8 2.8M13.7 10.3l2.8-2.8M10.3 13.7l-2.8 2.8" />
+        </Svg>
+      );
+    case "weather":
+      // sun
+      return (
+        <Svg {...props}>
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" />
+        </Svg>
+      );
   }
 }

@@ -1,25 +1,35 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { searchKaomoji } from "@/lib/search";
-import { getPopularKaomoji } from "@/data/kaomoji";
-import { CATEGORIES, type CategorySlug } from "@/lib/categories";
+import { getPopularItems, type ContentKind } from "@/lib/content";
+import { CATEGORIES } from "@/lib/categories";
 import { KaomojiGrid } from "./KaomojiGrid";
 import { SearchBar } from "./SearchBar";
 import { Mascot } from "./Mascot";
 import { CategoryIcon } from "./icons";
 
-const SUGGESTED: CategorySlug[] = ["cute", "happy", "greeting", "love"];
+const SUGGESTED = ["cute", "happy", "greeting", "love"] as const;
+
+type Filter = "all" | ContentKind;
+const FILTERS: { key: Filter; label: string }[] = [
+  { key: "all", label: "すべて" },
+  { key: "kaomoji", label: "顔文字" },
+  { key: "emoji", label: "絵文字" },
+  { key: "combo", label: "コンボ" },
+];
 
 export function SearchClient() {
   const params = useSearchParams();
   const rawQuery = params.get("q") ?? "";
   const query = rawQuery.trim();
+  const [filter, setFilter] = useState<Filter>("all");
 
   const results = useMemo(() => (query ? searchKaomoji(query) : []), [query]);
-  const popular = useMemo(() => getPopularKaomoji(12), []);
+  const popular = useMemo(() => getPopularItems(12), []);
+  const shown = filter === "all" ? results : results.filter((r) => r.kind === filter);
 
   return (
     <div className="shell py-6 sm:py-8">
@@ -30,13 +40,11 @@ export function SearchClient() {
       {query === "" ? (
         <section className="mt-8 sm:mt-10">
           <p className="text-sm text-ink-soft">
-            キーワードを入力して顔文字を検索できます。まずは人気の顔文字からどうぞ。
+            キーワードを入力して顔文字・絵文字・コンボを検索できます。まずは人気のアイテムからどうぞ。
           </p>
           <div className="mt-4 flex items-center gap-2.5">
             <span aria-hidden="true" className="h-6 w-1.5 rounded-full bg-primary" />
-            <h1 className="text-xl font-extrabold text-ink sm:text-2xl">
-              人気の顔文字
-            </h1>
+            <h1 className="text-xl font-extrabold text-ink sm:text-2xl">人気のアイテム</h1>
           </div>
           <div className="mt-5">
             <KaomojiGrid items={popular} />
@@ -50,8 +58,42 @@ export function SearchClient() {
               {results.length}件見つかりました
             </span>
           </h1>
+          <div
+            role="group"
+            aria-label="種類で絞り込み"
+            className="mt-4 flex flex-wrap gap-2"
+          >
+            {FILTERS.map((f) => {
+              const count =
+                f.key === "all"
+                  ? results.length
+                  : results.filter((r) => r.kind === f.key).length;
+              return (
+                <button
+                  key={f.key}
+                  type="button"
+                  onClick={() => setFilter(f.key)}
+                  aria-pressed={filter === f.key}
+                  className={`rounded-full px-3.5 py-1.5 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                    filter === f.key
+                      ? "bg-primary text-white shadow-soft"
+                      : "bg-white text-ink-soft ring-1 ring-hairline hover:text-ink"
+                  }`}
+                >
+                  {f.label}
+                  <span className="ml-1 text-xs opacity-80">{count}</span>
+                </button>
+              );
+            })}
+          </div>
           <div className="mt-5">
-            <KaomojiGrid items={results} />
+            {shown.length > 0 ? (
+              <KaomojiGrid items={shown} />
+            ) : (
+              <p className="rounded-card border border-hairline bg-surface-tint px-4 py-8 text-center text-sm text-ink-soft">
+                この種類の結果はありません。
+              </p>
+            )}
           </div>
         </section>
       ) : (
@@ -79,11 +121,9 @@ function NoResults() {
           ？
         </span>
       </div>
-      <p className="mt-4 text-xl font-extrabold text-ink">
-        見つかりませんでした
-      </p>
+      <p className="mt-4 text-xl font-extrabold text-ink">見つかりませんでした</p>
       <p className="mt-2 max-w-md text-sm leading-relaxed text-ink-soft">
-        別のキーワードで試すか、カテゴリから顔文字を探してみてください。
+        別のキーワードで試すか、カテゴリから探してみてください。
       </p>
 
       <ul className="mt-6 flex flex-wrap justify-center gap-2.5">
@@ -101,7 +141,7 @@ function NoResults() {
                 >
                   <CategoryIcon name={slug} size={16} />
                 </span>
-                {category.label}顔文字
+                {category.label}
               </Link>
             </li>
           );
@@ -112,7 +152,7 @@ function NoResults() {
         href="/#popular"
         className="mt-6 inline-flex items-center gap-1 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
-        人気の顔文字をみる →
+        人気のアイテムをみる →
       </Link>
     </div>
   );

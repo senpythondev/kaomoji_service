@@ -1,11 +1,15 @@
 /**
- * Category metadata for Kaomoji Palette.
- * Slugs and Japanese labels are fixed by the project charter (CLAUDE.md).
- * Each category carries the CSS-variable names that drive its theming
- * (see the `--cat-*` tokens in app/globals.css).
+ * Unified category taxonomy — shared across ALL kinds (kaomoji, emoji, combo).
+ * A category page therefore shows kaomoji, emoji and combos together.
+ *
+ * The 8 emotion categories are the charter's kaomoji categories (unchanged
+ * slugs/labels/URLs/SEO). The 5 thematic categories give object-style emoji
+ * (and the occasional kaomoji/combo) a natural home. Each carries the CSS
+ * variable names that drive its theming (the `--cat-*` tokens in globals.css).
  */
 
 export const CATEGORY_SLUGS = [
+  // emotion (kaomoji-first)
   "happy",
   "cute",
   "sad",
@@ -14,6 +18,12 @@ export const CATEGORY_SLUGS = [
   "love",
   "greeting",
   "apology",
+  // thematic (emoji-first, but shared)
+  "animal",
+  "food",
+  "celebration",
+  "nature",
+  "weather",
 ] as const;
 
 export type CategorySlug = (typeof CATEGORY_SLUGS)[number];
@@ -24,7 +34,7 @@ export interface Category {
   slug: CategorySlug;
   /** Japanese label shown in the UI. */
   label: string;
-  /** Short Japanese blurb used on category pages and for SEO. */
+  /** Short Japanese blurb. */
   description: string;
   /** CSS variable holding the accent color. */
   accentVar: `var(--cat-${CategorySlug})`;
@@ -32,66 +42,37 @@ export interface Category {
   softVar: `var(--cat-${CategorySlug}-soft)`;
 }
 
+function cat(
+  slug: CategorySlug,
+  label: string,
+  description: string,
+): Category {
+  return {
+    slug,
+    label,
+    description,
+    accentVar: `var(--cat-${slug})`,
+    softVar: `var(--cat-${slug}-soft)`,
+  };
+}
+
 export const CATEGORIES: Record<CategorySlug, Category> = {
-  happy: {
-    slug: "happy",
-    label: "うれしい",
-    description: "うれしい・楽しい気持ちを伝える顔文字。",
-    accentVar: "var(--cat-happy)",
-    softVar: "var(--cat-happy-soft)",
-  },
-  cute: {
-    slug: "cute",
-    label: "かわいい",
-    description: "ふんわりかわいい顔文字あつめ。",
-    accentVar: "var(--cat-cute)",
-    softVar: "var(--cat-cute-soft)",
-  },
-  sad: {
-    slug: "sad",
-    label: "悲しい",
-    description: "悲しい・泣きたい気持ちの顔文字。",
-    accentVar: "var(--cat-sad)",
-    softVar: "var(--cat-sad-soft)",
-  },
-  angry: {
-    slug: "angry",
-    label: "怒る",
-    description: "プンプン怒っているときの顔文字。",
-    accentVar: "var(--cat-angry)",
-    softVar: "var(--cat-angry-soft)",
-  },
-  surprised: {
-    slug: "surprised",
-    label: "驚き",
-    description: "びっくり・驚いたときの顔文字。",
-    accentVar: "var(--cat-surprised)",
-    softVar: "var(--cat-surprised-soft)",
-  },
-  love: {
-    slug: "love",
-    label: "愛・好き",
-    description: "大好きな気持ちを伝える顔文字。",
-    accentVar: "var(--cat-love)",
-    softVar: "var(--cat-love-soft)",
-  },
-  greeting: {
-    slug: "greeting",
-    label: "挨拶・お礼",
-    description: "あいさつやお礼に使える顔文字。",
-    accentVar: "var(--cat-greeting)",
-    softVar: "var(--cat-greeting-soft)",
-  },
-  apology: {
-    slug: "apology",
-    label: "謝る",
-    description: "ごめんなさいの気持ちを伝える顔文字。",
-    accentVar: "var(--cat-apology)",
-    softVar: "var(--cat-apology-soft)",
-  },
+  happy: cat("happy", "うれしい", "うれしい・楽しい気持ちを伝える顔文字や絵文字。"),
+  cute: cat("cute", "かわいい", "ふんわりかわいい顔文字・絵文字あつめ。"),
+  sad: cat("sad", "悲しい", "悲しい・泣きたい気持ちの顔文字や絵文字。"),
+  angry: cat("angry", "怒る", "プンプン怒っているときの顔文字や絵文字。"),
+  surprised: cat("surprised", "驚き", "びっくり・驚いたときの顔文字や絵文字。"),
+  love: cat("love", "愛・好き", "大好きな気持ちを伝える顔文字・絵文字・ハート。"),
+  greeting: cat("greeting", "挨拶・お礼", "あいさつやお礼に使える顔文字や絵文字。"),
+  apology: cat("apology", "謝る", "ごめんなさいの気持ちを伝える顔文字や絵文字。"),
+  animal: cat("animal", "動物", "猫や犬などかわいい動物の絵文字・顔文字。"),
+  food: cat("food", "食べ物", "果物・スイーツ・ごはんなど食べ物の絵文字。"),
+  celebration: cat("celebration", "お祝い", "誕生日やおめでとうを伝えるお祝いの絵文字。"),
+  nature: cat("nature", "自然", "花や植物など自然の絵文字。"),
+  weather: cat("weather", "天気", "晴れ・雨・雪など天気の絵文字。"),
 };
 
-/** Ordered list of all categories (charter order). */
+/** Ordered list of all categories. */
 export const CATEGORY_LIST: Category[] = CATEGORY_SLUGS.map(
   (slug) => CATEGORIES[slug],
 );

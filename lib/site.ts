@@ -25,8 +25,7 @@ export interface NavItem {
 export const TOP_NAV: NavItem[] = [
   { label: "ホーム", href: "/" },
   { label: "カテゴリ", href: "/#categories" },
-  { label: "絵文字", href: "/emoji" },
-  { label: "人気の顔文字", href: "/#popular" },
+  { label: "人気", href: "/#popular" },
   { label: "運営者情報", href: "/about" },
 ];
 
@@ -50,7 +49,6 @@ export const FOOTER_LINKS: { heading: string; items: NavItem[] }[] = [
     heading: "サイト",
     items: [
       { label: "ホーム", href: "/" },
-      { label: "絵文字一覧", href: "/emoji" },
       { label: "人気の顔文字", href: "/#popular" },
       { label: "顔文字を検索", href: "/search" },
     ],

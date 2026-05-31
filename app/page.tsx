@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
-import { getNewestKaomoji, getPopularKaomoji } from "@/data/kaomoji";
+import { getNewestItems, getPopularItems } from "@/lib/content";
 import { Mascot } from "@/components/Mascot";
 import { SearchBar } from "@/components/SearchBar";
 import { CategoryTiles } from "@/components/CategoryTiles";
@@ -31,8 +31,8 @@ const websiteJsonLd = {
 };
 
 export default function HomePage() {
-  const popular = getPopularKaomoji(8);
-  const newest = getNewestKaomoji(8);
+  const popular = getPopularItems(8);
+  const newest = getNewestItems(8);
 
   return (
     <>
@@ -99,7 +99,7 @@ export default function HomePage() {
       {/* Popular */}
       <section id="popular" className="shell scroll-mt-20 pt-12 sm:pt-16">
         <SectionHeading
-          title="人気の顔文字"
+          title="人気の顔文字・絵文字"
           accent="var(--cat-happy)"
         />
         <div className="mt-5">

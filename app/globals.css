@@ -69,6 +69,17 @@
   --cat-greeting-soft: #d9f1ea;
   --cat-apology: #6f7c98;
   --cat-apology-soft: #e8ecf3;
+  /* thematic categories (shared across kaomoji / emoji / combo) */
+  --cat-animal: #c2843f;
+  --cat-animal-soft: #f4e8d8;
+  --cat-food: #e08038;
+  --cat-food-soft: #fce6d6;
+  --cat-celebration: #d99a2b;
+  --cat-celebration-soft: #fbeecb;
+  --cat-nature: #4fa86d;
+  --cat-nature-soft: #ddf1e3;
+  --cat-weather: #4f9bd9;
+  --cat-weather-soft: #def0fb;
 
   color-scheme: light;
 }
@@ -125,6 +136,20 @@ body {
     sans-serif;
   font-variant-emoji: emoji;
   line-height: 1.2;
+}
+
+/*
+ * Combo items contain BOTH a kaomoji part and emoji part(s). KaomojiText (first)
+ * renders the line-art glyphs; the color-emoji fonts (next, BEFORE any
+ * monochrome symbol font) render the emoji in color. JP fallbacks last.
+ */
+.combo-glyph {
+  font-family: "KaomojiText", "Apple Color Emoji", "Segoe UI Emoji",
+    "Noto Color Emoji", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  font-variant-emoji: emoji;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -19,14 +19,14 @@
 import type { CategorySlug } from "@/lib/categories";
 import type { ContentItem } from "@/lib/content";
 
-/** A kaomoji is a ContentItem narrowed to type "kaomoji" + kaomoji categories. */
-export interface Kaomoji extends Omit<ContentItem, "type" | "categories"> {
-  type: "kaomoji";
+/** A kaomoji is a ContentItem narrowed to kind "kaomoji" + kaomoji categories. */
+export interface Kaomoji extends Omit<ContentItem, "kind" | "categories"> {
+  kind: "kaomoji";
   categories: CategorySlug[];
 }
 
-/** Authoring shape — `type` is injected when the flat list is assembled. */
-type KaomojiSeed = Omit<Kaomoji, "type">;
+/** Authoring shape — `kind` is injected when the flat list is assembled. */
+type KaomojiSeed = Omit<Kaomoji, "kind">;
 
 // ── happy / うれしい ────────────────────────────────────────
 const HAPPY: KaomojiSeed[] = [
@@ -335,7 +335,7 @@ export const KAOMOJI: Kaomoji[] = [
   ...LOVE,
   ...GREETING,
   ...APOLOGY,
-].map((k) => ({ ...k, type: "kaomoji" as const }));
+].map((k) => ({ ...k, kind: "kaomoji" as const }));
 
 /** All kaomoji. */
 export function getAllKaomoji(): Kaomoji[] {

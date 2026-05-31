@@ -15,13 +15,9 @@ type SortKey = "popular" | "newest";
 export function CategoryKaomojiList({
   items,
   categorySlug,
-  label,
-  unit,
 }: {
   items: ContentItem[];
   categorySlug: string;
-  label: string;
-  unit: string;
 }) {
   const [sort, setSort] = useState<SortKey>("popular");
 
@@ -39,9 +35,7 @@ export function CategoryKaomojiList({
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-ink-soft">
-          全<span className="font-bold text-ink">{items.length}</span>件の
-          {label}
-          {unit}
+          全<span className="font-bold text-ink">{items.length}</span>件
         </p>
         <div
           role="group"

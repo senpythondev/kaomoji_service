@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CATEGORIES, CATEGORY_SLUGS, getCategory } from "@/lib/categories";
 import { CATEGORY_CONTENT } from "@/lib/category-content";
-import { KAOMOJI, getKaomojiById, getKaomojiByCategory } from "@/data/kaomoji";
-import { detailMetadata } from "@/lib/content";
+import {
+  ALL_ITEMS,
+  detailMetadata,
+  getContentById,
+  getContentByCategory,
+} from "@/lib/content";
 import { SITE } from "@/lib/site";
 import { Mascot } from "@/components/Mascot";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -15,15 +19,15 @@ import { DetailView } from "@/components/DetailView";
 type Params = { slug: string };
 
 /**
- * One dynamic segment serving BOTH category landing pages (/kaomoji/cute) and
- * per-kaomoji detail pages (/kaomoji/happy-niko). Next.js forbids two different
- * dynamic params at the same path, so the slug is dispatched here. Category
- * slugs and kaomoji ids never collide.
+ * One dynamic segment for the whole library: category landing pages
+ * (/kaomoji/cute — shows kaomoji + emoji + combos together) AND per-item detail
+ * pages (/kaomoji/happy-niko, /kaomoji/emoji-animal-01, /kaomoji/combo-01).
+ * Category slugs and item ids never collide.
  */
 export function generateStaticParams(): Params[] {
   return [
     ...CATEGORY_SLUGS.map((slug) => ({ slug })),
-    ...KAOMOJI.map((k) => ({ slug: k.id })),
+    ...ALL_ITEMS.map((item) => ({ slug: item.id })),
   ];
 }
 
@@ -53,7 +57,7 @@ export async function generateMetadata({
     };
   }
 
-  const item = getKaomojiById(slug);
+  const item = getContentById(slug);
   if (item) {
     const { title, description, path } = detailMetadata(item);
     return {
@@ -66,7 +70,7 @@ export async function generateMetadata({
   return {};
 }
 
-export default async function KaomojiSlugPage({
+export default async function LibrarySlugPage({
   params,
 }: {
   params: Promise<Params>;
@@ -76,11 +80,11 @@ export default async function KaomojiSlugPage({
   const cat = getCategory(slug);
   if (cat) {
     const content = CATEGORY_CONTENT[cat.slug];
-    const items = getKaomojiByCategory(cat.slug);
+    const items = getContentByCategory(cat.slug); // all kinds, popular first
 
     const crumbs = [
       { label: "ホーム", href: "/" },
-      { label: "顔文字", href: "/#categories" },
+      { label: "カテゴリ", href: "/#categories" },
       { label: cat.label },
     ];
     const breadcrumbJsonLd = {
@@ -88,7 +92,7 @@ export default async function KaomojiSlugPage({
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "ホーム", item: `${SITE.url}/` },
-        { "@type": "ListItem", position: 2, name: "顔文字", item: `${SITE.url}/#categories` },
+        { "@type": "ListItem", position: 2, name: "カテゴリ", item: `${SITE.url}/#categories` },
         { "@type": "ListItem", position: 3, name: cat.label, item: `${SITE.url}/kaomoji/${cat.slug}` },
       ],
     };
@@ -123,7 +127,7 @@ export default async function KaomojiSlugPage({
                   {cat.label}
                 </span>
                 <h1 className="mt-3 text-2xl font-extrabold leading-tight tracking-tight text-ink sm:text-3xl lg:text-4xl">
-                  {cat.label}顔文字一覧
+                  {cat.label}の顔文字・絵文字一覧
                   <span className="mt-1 block text-base font-bold text-primary sm:text-lg">
                     ｜ワンクリックでコピー
                   </span>
@@ -137,12 +141,7 @@ export default async function KaomojiSlugPage({
           </section>
 
           <div className="mt-8">
-            <CategoryKaomojiList
-              items={items}
-              categorySlug={cat.slug}
-              label={cat.label}
-              unit="顔文字"
-            />
+            <CategoryKaomojiList items={items} categorySlug={cat.slug} />
           </div>
 
           <div className="mt-14">
@@ -152,7 +151,7 @@ export default async function KaomojiSlugPage({
                 return {
                   href: `/kaomoji/${s}`,
                   label: c.label,
-                  count: getKaomojiByCategory(s).length,
+                  count: getContentByCategory(s).length,
                   accentVar: c.accentVar,
                   softVar: c.softVar,
                   icon: <CategoryIcon name={s} size={18} />,
@@ -165,7 +164,7 @@ export default async function KaomojiSlugPage({
     );
   }
 
-  const item = getKaomojiById(slug);
+  const item = getContentById(slug);
   if (item) return <DetailView item={item} />;
 
   notFound();

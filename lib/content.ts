@@ -1,23 +1,26 @@
 /**
- * Shared content layer for the two content types: kaomoji (line-art text faces)
- * and emoji (絵文字, platform color glyphs). Both share the SAME shape so they
- * reuse KaomojiCard, copy/toast, search, the category template, and DetailView.
- * The `type` field keeps them distinguishable for routing, theming, and the
- * (kaomoji-only) font-coverage check.
+ * Unified content library. Kaomoji, emoji, and combos are ONE collection,
+ * distinguished only by `kind`, sharing the same shape and the same category
+ * taxonomy. Home, category pages, search, and detail pages all draw from here,
+ * so the three kinds appear together everywhere.
+ *
+ * Rendering: kaomoji use the bundled KaomojiText subset (.kaomoji-glyph); emoji
+ * use the platform color-emoji font (.emoji-glyph); combos contain both and use
+ * .combo-glyph (KaomojiText + color-emoji). See app/globals.css.
  */
 import { CATEGORIES } from "./categories";
-import { EMOJI_CATEGORIES } from "./emoji-categories";
 import { SITE } from "./site";
 import { KAOMOJI } from "@/data/kaomoji";
 import { EMOJI } from "@/data/emoji";
+import { COMBOS } from "@/data/combos";
 
-export type ContentType = "kaomoji" | "emoji";
+export type ContentKind = "kaomoji" | "emoji" | "combo";
 
 export interface ContentItem {
   id: string;
-  /** The kaomoji or emoji glyph itself. */
+  /** The glyph(s): a kaomoji, an emoji, or a fused combo. */
   text: string;
-  type: ContentType;
+  kind: ContentKind;
   categories: string[];
   tags: string[];
   reading: string;
@@ -28,57 +31,62 @@ export interface ContentItem {
 export interface CategoryMeta {
   slug: string;
   label: string;
-  /** CSS variable for the accent color. */
   accentVar: string;
-  /** CSS variable for the soft card tint. */
   softVar: string;
 }
 
-/** Resolve a category's display metadata for either content type. */
-export function getCategoryMeta(
-  type: ContentType,
-  slug: string | undefined,
-): CategoryMeta | undefined {
+/** Resolve a category's display metadata (one taxonomy shared by all kinds). */
+export function getCategoryMeta(slug: string | undefined): CategoryMeta | undefined {
   if (!slug) return undefined;
-  if (type === "emoji") {
-    const c = EMOJI_CATEGORIES[slug as keyof typeof EMOJI_CATEGORIES];
-    return c && { slug: c.slug, label: c.label, accentVar: c.accentVar, softVar: c.softVar };
-  }
   const c = CATEGORIES[slug as keyof typeof CATEGORIES];
   return c && { slug: c.slug, label: c.label, accentVar: c.accentVar, softVar: c.softVar };
 }
 
-/** The route base path for a content type. */
-export function basePath(type: ContentType): "/emoji" | "/kaomoji" {
-  return type === "emoji" ? "/emoji" : "/kaomoji";
+/** Detail-page href — every kind lives under the unified /kaomoji namespace. */
+export function detailHref(item: Pick<ContentItem, "id">): string {
+  return `/kaomoji/${item.id}`;
 }
 
-/** Detail-page href for an item. */
-export function detailHref(item: Pick<ContentItem, "type" | "id">): string {
-  return `${basePath(item.type)}/${item.id}`;
+/** Japanese noun for a kind (used in labels/aria). */
+export function unitNoun(kind: ContentKind): string {
+  return kind === "emoji" ? "絵文字" : kind === "combo" ? "コンボ" : "顔文字";
 }
 
-/** Japanese unit noun for a content type (used in counts/labels). */
-export function unitNoun(type: ContentType): "顔文字" | "絵文字" {
-  return type === "emoji" ? "絵文字" : "顔文字";
+/** CSS class that renders a kind's glyph correctly. */
+export function glyphClass(kind: ContentKind): string {
+  return kind === "emoji"
+    ? "emoji-glyph"
+    : kind === "combo"
+      ? "combo-glyph"
+      : "kaomoji-glyph";
 }
 
-/** All content, both types, flat. */
-export const ALL_CONTENT: ContentItem[] = [...KAOMOJI, ...EMOJI];
+/** The one unified collection. */
+export const ALL_ITEMS: ContentItem[] = [...KAOMOJI, ...EMOJI, ...COMBOS];
 
 export function getContentById(id: string): ContentItem | undefined {
-  return ALL_CONTENT.find((item) => item.id === id);
+  return ALL_ITEMS.find((item) => item.id === id);
 }
 
-/** Items in a category of a given type, most popular first. */
-export function getContentByCategory(
-  type: ContentType,
-  slug: string,
-): ContentItem[] {
-  const pool = type === "emoji" ? EMOJI : KAOMOJI;
-  return [...pool]
+/** All items in a category (any kind), most popular first. */
+export function getContentByCategory(slug: string): ContentItem[] {
+  return [...ALL_ITEMS]
     .filter((item) => item.categories.includes(slug))
     .sort((a, b) => b.popularity - a.popularity);
+}
+
+/** Most popular items across the whole library. */
+export function getPopularItems(limit?: number): ContentItem[] {
+  const sorted = [...ALL_ITEMS].sort((a, b) => b.popularity - a.popularity);
+  return typeof limit === "number" ? sorted.slice(0, limit) : sorted;
+}
+
+/** Newest items across the whole library. */
+export function getNewestItems(limit?: number): ContentItem[] {
+  const sorted = [...ALL_ITEMS].sort(
+    (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt),
+  );
+  return typeof limit === "number" ? sorted.slice(0, limit) : sorted;
 }
 
 /** Per-item SEO metadata for a detail page (unique via the glyph + reading). */
@@ -87,8 +95,8 @@ export function detailMetadata(item: ContentItem): {
   description: string;
   path: string;
 } {
-  const unit = unitNoun(item.type);
-  const catLabel = getCategoryMeta(item.type, item.categories[0])?.label ?? "";
+  const unit = unitNoun(item.kind);
+  const catLabel = getCategoryMeta(item.categories[0])?.label ?? "";
   const tagPart = item.tags.slice(0, 3).join("・");
   return {
     title: `${item.text}（${item.reading}）の${unit}｜コピーして使える`,
