@@ -12,6 +12,27 @@
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
+  /*
+   * Scope the subset to ONLY the 143 kaomoji codepoints it actually contains,
+   * so this font is never a match for emoji codepoints. Without this, the
+   * subset (which has no emoji glyphs) was a fallback candidate everywhere —
+   * fatally so in .combo-glyph, where it precedes the color-emoji fonts — and
+   * could render emoji as tofu (□). Emoji now always fall through to the
+   * platform color-emoji font. Regenerate with the subset (run
+   * `node scripts/build-subset-font.mjs` and `node scripts/print-unicode-range.mjs`).
+   */
+  unicode-range: U+20, U+23, U+28-2A, U+2D-30, U+33, U+3A-3E, U+40, U+4A, U+4C,
+    U+4F, U+54, U+5A, U+5E-60, U+62-64, U+6C-6D, U+6F-72, U+75-76, U+7A, U+7E,
+    U+AC, U+B0, U+B4, U+B7, U+BA, U+D7, U+394, U+3A3, U+3B5, U+3C0, U+3C9, U+414,
+    U+434, U+2022, U+2200, U+2220, U+2229, U+2266-2267, U+25BC-25BD, U+25CB,
+    U+25CE-25CF, U+2606, U+2661, U+2665, U+266A, U+3002, U+300D, U+3042, U+3044,
+    U+3046, U+3048, U+304A-304D, U+304F, U+3053, U+3057, U+3059, U+305F-3060,
+    U+3063-3064, U+3066, U+3068, U+306F-3070, U+3078, U+307E-307F, U+3084,
+    U+3088, U+308A, U+308C-308D, U+3093, U+309B-309E, U+30A4, U+30B3-30B5,
+    U+30CA, U+30CD-30CE, U+30D8, U+30DA, U+30E1, U+30EA, U+30ED-30EE, U+30F3,
+    U+30FB-30FE, U+4E3F, U+4EBA, U+51F8, U+611F, U+65E6, U+76BF, U+8B1D, U+FF03,
+    U+FF0F, U+FF13, U+FF1B-FF1C, U+FF1E, U+FF3C, U+FF3E, U+FF40, U+FF4F, U+FF61,
+    U+FF65, U+FF89, U+FF8D, U+FF9B, U+FF9F, U+FFE2-FFE3;
 }
 
 /*
