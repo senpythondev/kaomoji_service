@@ -25,7 +25,7 @@ const COMBO_SEEDS: ComboSeed[] = [
   { id: "combo-05", text: "v(^_^)v 🎉", categories: ["happy", "celebration"], tags: ["勝利", "ピース", "やったね"], reading: "ぶい", popularity: 72, createdAt: "2026-02-18" },
 
   // love
-  { id: "combo-06", text: "(´∀`)♡ ❤️", categories: ["love"], tags: ["好き", "愛", "ハート"], reading: "すき", popularity: 88, createdAt: "2026-05-25" },
+  { id: "combo-06", text: "(´∀`)♡ 💕", categories: ["love"], tags: ["好き", "愛", "ハート"], reading: "すき", popularity: 88, createdAt: "2026-05-25" },
   { id: "combo-07", text: "(*♥ω♥*) 😍", categories: ["love"], tags: ["大好き", "メロメロ", "ときめき"], reading: "だいすき", popularity: 86, createdAt: "2026-05-12" },
   { id: "combo-08", text: "(´ε｀ )♡ 💕", categories: ["love"], tags: ["キス", "ラブラブ", "ちゅー"], reading: "ちゅー", popularity: 78, createdAt: "2026-04-08" },
   { id: "combo-09", text: "ヽ(♡´∀`)ﾉ 💖", categories: ["love"], tags: ["愛", "うれしい", "ハート"], reading: "あい", popularity: 75, createdAt: "2026-03-02" },
@@ -89,8 +89,8 @@ const COMBO_SEEDS: ComboSeed[] = [
   { id: "combo-47", text: "(´ー`) 🍀", categories: ["nature"], tags: ["四つ葉", "幸運", "クローバー"], reading: "よつば", popularity: 58, createdAt: "2026-02-06" },
 
   // weather
-  { id: "combo-48", text: "(＾▽＾) ☀️", categories: ["weather", "happy"], tags: ["晴れ", "太陽", "気分"], reading: "はれ", popularity: 66, createdAt: "2026-04-20" },
-  { id: "combo-49", text: "(；´Д｀) 🌧️", categories: ["weather"], tags: ["雨", "憂鬱", "天気"], reading: "あめ", popularity: 56, createdAt: "2026-02-16" },
+  { id: "combo-48", text: "(＾▽＾) 🌞", categories: ["weather", "happy"], tags: ["晴れ", "太陽", "気分"], reading: "はれ", popularity: 66, createdAt: "2026-04-20" },
+  { id: "combo-49", text: "(；´Д｀) 💧", categories: ["weather"], tags: ["雨", "しずく", "天気"], reading: "あめ", popularity: 56, createdAt: "2026-02-16" },
   { id: "combo-50", text: "(*ﾟ▽ﾟ*) 🌈", categories: ["weather", "happy"], tags: ["虹", "晴れ", "うれしい"], reading: "にじ", popularity: 60, createdAt: "2026-01-05" },
 ];
 

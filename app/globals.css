@@ -42,8 +42,14 @@
  * rounded cards and gentle shadows.
  */
 @theme {
+  /*
+   * No "Segoe UI Symbol" here: it is a MONOCHROME font that yields boxes for
+   * emoji code points. Keeping it out of every font stack guarantees emoji can
+   * only resolve to color-emoji fonts (.emoji-glyph / .combo-glyph). Kaomoji are
+   * fully covered by the range-scoped KaomojiText subset.
+   */
   --font-sans: "KaomojiText", var(--font-noto-sans-jp), "Hiragino Sans",
-    "Yu Gothic", system-ui, "Segoe UI Symbol", sans-serif;
+    "Yu Gothic", system-ui, sans-serif;
 
   /* Brand */
   --color-primary: #3d8bf0;

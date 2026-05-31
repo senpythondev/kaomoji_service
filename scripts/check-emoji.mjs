@@ -1,76 +1,72 @@
-// Build gate for emoji: every emoji used anywhere in the library — standalone
-// emoji items AND the emoji part(s) of combo items — must be on the approved,
-// well-established allowlist (scripts/approved-emoji.mjs). Keeps risky brand-new
-// emoji that tofu on older devices out. Also catches duplicate emoji items.
-//
-// Emoji render with the platform color-emoji font, NOT the kaomoji subset, so
-// emoji characters are intentionally NOT run through check-font-coverage.mjs;
-// the kaomoji characters of combos ARE (see scripts/kaomoji-glyphs.mjs).
+// Build gate for emoji: enforce the FIRM-ONLY allowlist so only rock-solid,
+// universally-supported emoji ship. Every emoji used anywhere — standalone emoji
+// items AND the emoji part(s) of combos — must be:
+//   * a SINGLE codepoint (no VS16/ZWJ sequences, no skin-tone modifiers, no
+//     flags, no profession/family combos), and
+//   * introduced in Emoji version <= CUTOFF (a conservative, easy-to-lower
+//     constant), per official Unicode data (scripts/emoji-versions.mjs).
+// Fails the build otherwise. (Emoji use the platform color-emoji font, not the
+// kaomoji subset, so they are NOT run through check-font-coverage.mjs; the
+// kaomoji characters of combos ARE.)
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { APPROVED_EMOJI } from "./approved-emoji.mjs";
+import { EMOJI_VERSION } from "./emoji-versions.mjs";
 import { classifyText, emojiUsage } from "./kaomoji-glyphs.mjs";
+
+// Firm cutoff: keep ONLY emoji introduced in this Emoji version or earlier.
+// Lower this single constant to tighten the set further.
+const CUTOFF = 5.0;
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
+function firmness(seq) {
+  const cps = [...seq].map((c) => c.codePointAt(0));
+  if (cps.length !== 1) {
+    return {
+      firm: false,
+      reason: `not single-codepoint (${cps.map((c) => "U+" + c.toString(16).toUpperCase()).join(" ")}) — VS16/ZWJ/skin-tone/flag/sequence not allowed`,
+    };
+  }
+  const hex = cps[0].toString(16).toUpperCase();
+  const v = EMOJI_VERSION[hex];
+  if (v === undefined) return { firm: false, reason: `U+${hex} is not a recognized single-codepoint emoji` };
+  if (v > CUTOFF) return { firm: false, reason: `Emoji ${v} > cutoff ${CUTOFF}` };
+  return { firm: true };
+}
+
+// Every distinct emoji used across emoji items + combo emoji-parts.
+const usage = emojiUsage();
+const nonFirm = [...usage].map(([s, sample]) => [s, sample, firmness(s)]).filter((x) => !x[2].firm);
+
+// Emoji items must contain ONLY emoji codepoints — catches placeholders/boxes
+// (e.g. U+FFFD/U+25A1) from a mangled write, which classify as non-emoji.
 const emojiTexts = [
   ...readFileSync(join(ROOT, "data/emoji.ts"), "utf8").matchAll(/text:\s*"([^"]+)"/g),
 ].map((m) => m[1]);
+const corrupted = emojiTexts
+  .map((t) => [t, classifyText(t).kaomojiCps.filter((cp) => cp > 0x20)])
+  .filter(([, bad]) => bad.length);
 
-// Emoji used across emoji items + combo emoji-parts → must all be approved.
-const usage = emojiUsage();
-const notApproved = [...usage].filter(([seq]) => !APPROVED_EMOJI.has(seq));
-
-// Corruption guard: every character of an emoji item must be a real emoji
-// codepoint (Extended_Pictographic + VS16/ZWJ). Any non-emoji codepoint — esp.
-// a placeholder/box like U+FFFD (replacement) or U+25A1 (white square) left by a
-// mangled/non-UTF-8 write — would be classified as "kaomoji", so flag those.
-const PLACEHOLDERS = new Set([0xfffd, 0xfffc, 0x25a1, 0x25af, 0xff1f]);
-const corrupted = [];
-for (const t of emojiTexts) {
-  const { kaomojiCps } = classifyText(t);
-  const bad = kaomojiCps.filter((cp) => cp > 0x20); // ignore plain spaces
-  if (bad.length) {
-    corrupted.push([t, bad.map((cp) => "U+" + cp.toString(16).toUpperCase())]);
-  }
-}
-const placeholders = corrupted.filter(([, cps]) =>
-  cps.some((h) => PLACEHOLDERS.has(parseInt(h.slice(2), 16))),
-);
-
-// Duplicate emoji items.
 const seen = new Set();
 const dupes = [...new Set(emojiTexts.filter((t) => (seen.has(t) ? true : (seen.add(t), false))))];
 
-if (notApproved.length || dupes.length || corrupted.length) {
+if (nonFirm.length || corrupted.length || dupes.length) {
+  if (nonFirm.length) {
+    console.error(`✗ ${nonFirm.length} non-firm emoji (must be single-codepoint, Emoji <= ${CUTOFF}):`);
+    for (const [s, sample, r] of nonFirm) console.error(`  ${s}  — ${r.reason}  (in: ${sample})`);
+    console.error("  Remove it, or re-point the combo to a firm emoji.");
+  }
   if (corrupted.length) {
-    console.error(
-      `✗ ${corrupted.length} emoji item(s) contain non-emoji / placeholder codepoints` +
-        (placeholders.length ? " (⚠ includes □/replacement-style placeholders — likely a corrupt write)" : "") +
-        ":",
-    );
-    for (const [t, cps] of corrupted) console.error(`  "${t}"  ->  ${cps.join(" ")}`);
-    console.error("  Emoji items must be real emoji codepoints (re-author as correct UTF-8).");
-  }
-  if (notApproved.length) {
-    console.error(`✗ ${notApproved.length} emoji not on the approved well-established list:`);
-    for (const [seq, sample] of notApproved) {
-      const cps = [...seq]
-        .map((c) => "U+" + c.codePointAt(0).toString(16).toUpperCase())
-        .join(" ");
-      console.error(`  ${seq}  (${cps})  in: ${sample}`);
+    console.error(`✗ ${corrupted.length} emoji item(s) contain non-emoji / placeholder codepoints:`);
+    for (const [t, bad] of corrupted) {
+      console.error(`  "${t}"  ->  ${bad.map((cp) => "U+" + cp.toString(16).toUpperCase()).join(" ")}`);
     }
-    console.error(
-      "  Add it to scripts/approved-emoji.mjs ONLY if it is well-established and renders everywhere.",
-    );
   }
-  if (dupes.length) {
-    console.error(`✗ duplicate emoji in data/emoji.ts: ${dupes.join(" ")}`);
-  }
+  if (dupes.length) console.error(`✗ duplicate emoji in data/emoji.ts: ${dupes.join(" ")}`);
   process.exit(1);
 }
 
 console.log(
-  `✓ emoji check: all ${usage.size} distinct emoji (emoji items + combos) are approved (${APPROVED_EMOJI.size} on the allowlist)`,
+  `✓ emoji check: all ${usage.size} distinct emoji are firm — single-codepoint, Emoji <= ${CUTOFF} (${emojiTexts.length} emoji items)`,
 );

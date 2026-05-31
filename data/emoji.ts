@@ -54,7 +54,6 @@ const FACE: EmojiSeed[] = [
 
 // ── ハート / heart ──────────────────────────────────────────
 const HEART: EmojiSeed[] = [
-  { id: "emoji-heart-01", text: "❤️", categories: ["love"], tags: ["赤いハート", "愛", "好き", "ラブ"], reading: "あかいはーと", popularity: 97, createdAt: "2025-07-06" },
   { id: "emoji-heart-02", text: "🧡", categories: ["love"], tags: ["オレンジ", "ハート"], reading: "おれんじのはーと", popularity: 62, createdAt: "2025-08-15" },
   { id: "emoji-heart-03", text: "💛", categories: ["love"], tags: ["黄色", "ハート", "友情"], reading: "きいろのはーと", popularity: 70, createdAt: "2025-09-10" },
   { id: "emoji-heart-04", text: "💚", categories: ["love"], tags: ["緑", "ハート"], reading: "みどりのはーと", popularity: 64, createdAt: "2025-10-01" },
@@ -152,14 +151,7 @@ const FOOD: EmojiSeed[] = [
 
 // ── 天気 / weather ──────────────────────────────────────────
 const WEATHER: EmojiSeed[] = [
-  { id: "emoji-weather-01", text: "☀️", categories: ["weather"], tags: ["太陽", "晴れ", "お日様", "快晴"], reading: "たいよう", popularity: 90, createdAt: "2025-07-13" },
   { id: "emoji-weather-02", text: "⛅", categories: ["weather"], tags: ["晴れ時々曇り", "雲", "天気"], reading: "はれときどきくもり", popularity: 66, createdAt: "2025-08-21" },
-  { id: "emoji-weather-03", text: "☁️", categories: ["weather"], tags: ["曇り", "雲", "くもり"], reading: "くもり", popularity: 72, createdAt: "2025-09-15" },
-  { id: "emoji-weather-04", text: "🌧️", categories: ["weather"], tags: ["雨", "雨降り", "あめ"], reading: "あめ", popularity: 78, createdAt: "2025-10-09" },
-  { id: "emoji-weather-05", text: "⛈️", categories: ["weather"], tags: ["雷雨", "嵐", "かみなり"], reading: "らいう", popularity: 60, createdAt: "2025-11-06" },
-  { id: "emoji-weather-06", text: "🌩️", categories: ["weather"], tags: ["雷", "稲妻", "かみなり"], reading: "かみなり", popularity: 62, createdAt: "2025-12-04" },
-  { id: "emoji-weather-07", text: "❄️", categories: ["weather"], tags: ["雪", "結晶", "冬", "ゆき"], reading: "ゆき", popularity: 83, createdAt: "2026-01-12" },
-  { id: "emoji-weather-08", text: "☃️", categories: ["weather"], tags: ["雪だるま", "冬", "ゆきだるま"], reading: "ゆきだるま", popularity: 70, createdAt: "2026-02-08" },
   { id: "emoji-weather-09", text: "⛄", categories: ["weather"], tags: ["雪だるま", "冬", "ゆき"], reading: "ゆきだるま", popularity: 68, createdAt: "2026-03-01" },
   { id: "emoji-weather-10", text: "🌈", categories: ["weather", "nature"], tags: ["虹", "レインボー", "にじ"], reading: "にじ", popularity: 87, createdAt: "2026-03-26" },
   { id: "emoji-weather-11", text: "🌙", categories: ["weather"], tags: ["月", "三日月", "夜", "つき"], reading: "つき", popularity: 80, createdAt: "2026-04-15" },
@@ -175,7 +167,6 @@ const HAND: EmojiSeed[] = [
   { id: "emoji-hand-01", text: "👍", categories: ["greeting"], tags: ["いいね", "グッド", "賛成", "OK"], reading: "いいね", popularity: 95, createdAt: "2025-07-15" },
   { id: "emoji-hand-02", text: "👎", categories: ["greeting"], tags: ["だめ", "ブーイング", "反対"], reading: "ばっど", popularity: 66, createdAt: "2025-08-07" },
   { id: "emoji-hand-03", text: "👌", categories: ["greeting"], tags: ["OK", "オーケー", "完璧", "いいね"], reading: "おっけー", popularity: 84, createdAt: "2025-08-30" },
-  { id: "emoji-hand-04", text: "✌️", categories: ["greeting"], tags: ["ピース", "勝利", "Vサイン"], reading: "ぴーす", popularity: 82, createdAt: "2025-09-24" },
   { id: "emoji-hand-05", text: "🤞", categories: ["greeting"], tags: ["指クロス", "幸運を祈る", "おねがい"], reading: "ゆびくろす", popularity: 64, createdAt: "2025-10-18" },
   { id: "emoji-hand-06", text: "👏", categories: ["greeting"], tags: ["拍手", "パチパチ", "称賛", "すごい"], reading: "はくしゅ", popularity: 88, createdAt: "2025-11-14" },
   { id: "emoji-hand-07", text: "🙏", categories: ["greeting"], tags: ["お願い", "合掌", "感謝", "ありがとう"], reading: "おねがい", popularity: 92, createdAt: "2025-12-08" },
@@ -187,8 +178,6 @@ const HAND: EmojiSeed[] = [
   { id: "emoji-hand-13", text: "✊", categories: ["greeting"], tags: ["こぶし", "がんばろう", "握りこぶし"], reading: "こぶし", popularity: 60, createdAt: "2026-04-07" },
   { id: "emoji-hand-14", text: "👀", categories: ["greeting"], tags: ["目", "見てる", "注目", "みてる"], reading: "みてる", popularity: 85, createdAt: "2026-04-25" },
   { id: "emoji-hand-15", text: "👉", categories: ["greeting"], tags: ["右", "指差し", "こちら"], reading: "みぎゆび", popularity: 62, createdAt: "2026-05-13" },
-  { id: "emoji-hand-16", text: "☝️", categories: ["greeting"], tags: ["上", "人差し指", "ひとつ"], reading: "うえゆび", popularity: 58, createdAt: "2025-06-27" },
-  { id: "emoji-hand-17", text: "🖐️", categories: ["greeting"], tags: ["手のひら", "パー", "ストップ"], reading: "てのひら", popularity: 56, createdAt: "2025-09-12" },
   { id: "emoji-hand-18", text: "🤙", categories: ["greeting"], tags: ["電話して", "シャカ", "コール"], reading: "でんわして", popularity: 54, createdAt: "2025-12-20" },
 ];
 
