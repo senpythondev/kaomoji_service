@@ -30,7 +30,7 @@ export function KaomojiCard({
   const [copied, setCopied] = useState(false);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const meta = getCategoryMeta(categorySlug ?? kaomoji.categories[0]);
+  const meta = getCategoryMeta(categorySlug ?? kaomoji.categories?.[0]);
   const softVar = meta?.softVar ?? "var(--color-surface-tint)";
   const label = meta?.label ?? unitNoun(kaomoji.kind);
 

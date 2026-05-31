@@ -20,10 +20,12 @@ import { ChevronRightIcon } from "./icons";
 export function DetailView({ item }: { item: ContentItem }) {
   const unit = unitNoun(item.kind);
   const gClass = glyphClass(item.kind);
-  const meta = getCategoryMeta(item.categories[0]);
+  const primaryCategory = item.categories?.[0];
+  const meta = getCategoryMeta(primaryCategory);
   const categoryHref = meta ? `/kaomoji/${meta.slug}` : "/#categories";
 
-  const related = getContentByCategory(item.categories[0])
+  // Resilient: a missing/empty category yields no related items rather than a 500.
+  const related = getContentByCategory(primaryCategory ?? "")
     .filter((r) => r.id !== item.id)
     .slice(0, 8);
 
@@ -125,7 +127,7 @@ export function DetailView({ item }: { item: ContentItem }) {
           <div className="mt-5">
             <h2 className="text-sm font-bold text-ink">関連タグ</h2>
             <ul className="mt-2 flex flex-wrap gap-2">
-              {item.tags.map((tag) => (
+              {(item.tags ?? []).map((tag) => (
                 <li key={tag}>
                   <Link
                     href={`/search?q=${encodeURIComponent(tag)}`}

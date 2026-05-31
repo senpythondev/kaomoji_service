@@ -91,11 +91,13 @@ interface IndexEntry {
 
 // Index both kaomoji and emoji so search returns both.
 const INDEX: IndexEntry[] = ALL_ITEMS.map((item) => {
-  const exact = [...item.tags, item.reading].map(normalize);
-  const base = normalize([item.text, ...item.tags, item.reading].join(" "));
-  const romaji = [item.reading, ...item.tags]
-    .map((s) => toRomaji(normalize(s)))
-    .join(" ");
+  // Resilient to a malformed item missing tags/reading/text.
+  const tags = item.tags ?? [];
+  const reading = item.reading ?? "";
+  const text = item.text ?? "";
+  const exact = [...tags, reading].map(normalize);
+  const base = normalize([text, ...tags, reading].join(" "));
+  const romaji = [reading, ...tags].map((s) => toRomaji(normalize(s))).join(" ");
   return { item, haystack: `${base} ${romaji}`, exact };
 });
 

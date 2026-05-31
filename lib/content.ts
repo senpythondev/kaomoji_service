@@ -70,8 +70,10 @@ export function getContentById(id: string): ContentItem | undefined {
 
 /** All items in a category (any kind), most popular first. */
 export function getContentByCategory(slug: string): ContentItem[] {
+  if (!slug) return [];
+  // Resilient: an item missing `categories` must not throw the whole page.
   return [...ALL_ITEMS]
-    .filter((item) => item.categories.includes(slug))
+    .filter((item) => (item.categories ?? []).includes(slug))
     .sort((a, b) => b.popularity - a.popularity);
 }
 
