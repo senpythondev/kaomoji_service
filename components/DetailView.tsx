@@ -9,6 +9,7 @@ import {
 import { SITE } from "@/lib/site";
 import { Breadcrumb } from "./Breadcrumb";
 import { CopyButton } from "./CopyButton";
+import { FavoriteButton } from "./FavoriteButton";
 import { Glyph } from "./Glyph";
 import { ChevronRightIcon } from "./icons";
 
@@ -90,8 +91,9 @@ export function DetailView({ item }: { item: ContentItem }) {
                   : "text-4xl font-medium text-ink sm:text-5xl"
             }`}
           />
-          <div className="mt-7">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <CopyButton text={item.text} />
+            <FavoriteButton item={item} variant="labeled" />
           </div>
         </section>
 

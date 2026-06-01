@@ -10,6 +10,7 @@ import {
 } from "@/lib/content";
 import { copyText } from "@/lib/clipboard";
 import { useToast } from "./ToastProvider";
+import { FavoriteButton } from "./FavoriteButton";
 import { Glyph } from "./Glyph";
 import { CheckIcon, ChevronRightIcon, CopyIcon } from "./icons";
 
@@ -43,7 +44,7 @@ export function KaomojiCard({
 
   async function handleCopy() {
     await copyText(kaomoji.text);
-    toast("コピーしました");
+    toast("コピーしました", "クリップボードに保存しました");
     setCopied(true);
     if (resetTimer.current) clearTimeout(resetTimer.current);
     resetTimer.current = setTimeout(() => setCopied(false), 1600);
@@ -77,6 +78,8 @@ export function KaomojiCard({
           </span>
         </span>
       </button>
+
+      <FavoriteButton item={kaomoji} className="absolute left-2 top-2 z-10" />
 
       <Link
         href={detailHref(kaomoji)}

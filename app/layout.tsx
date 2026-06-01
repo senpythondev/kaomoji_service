@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
 import { ToastProvider } from "@/components/ToastProvider";
+import { FavoritesProvider } from "@/components/FavoritesProvider";
 
 /*
  * Noto Sans JP, self-hosted via next/font. Discrete weights + preload:false is
@@ -77,10 +78,12 @@ export default function RootLayout({
     <html lang="ja" className={`${notoSansJP.variable} h-full`}>
       <body className="flex min-h-dvh flex-col pb-[calc(72px+env(safe-area-inset-bottom))] md:pb-0">
         <ToastProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <BottomNav />
+          <FavoritesProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <BottomNav />
+          </FavoritesProvider>
         </ToastProvider>
       </body>
     </html>

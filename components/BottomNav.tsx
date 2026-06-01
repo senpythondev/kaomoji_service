@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BOTTOM_NAV, type BottomNavIcon } from "@/lib/site";
-import { GridIcon, HomeIcon, InfoIcon, SearchIcon } from "./icons";
+import { GridIcon, HeartIcon, HomeIcon, InfoIcon, SearchIcon } from "./icons";
 
 const INFO_PATHS = ["/about", "/how-to", "/contact", "/terms", "/privacy"];
 
@@ -15,6 +15,8 @@ function isActive(icon: BottomNavIcon, pathname: string): boolean {
       return pathname.startsWith("/search");
     case "grid":
       return pathname.startsWith("/kaomoji");
+    case "favorites":
+      return pathname.startsWith("/favorites");
     case "info":
       return INFO_PATHS.some((p) => pathname.startsWith(p));
   }
@@ -24,6 +26,7 @@ const ICONS: Record<BottomNavIcon, typeof HomeIcon> = {
   home: HomeIcon,
   search: SearchIcon,
   grid: GridIcon,
+  favorites: HeartIcon,
   info: InfoIcon,
 };
 

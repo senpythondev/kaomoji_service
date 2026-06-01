@@ -95,6 +95,36 @@ export function ChevronRightIcon(props: IconProps) {
   );
 }
 
+const HEART_PATH =
+  "M12 20S3.5 14.5 3.5 8.8A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 8.5 1.8C20.5 14.5 12 20 12 20z";
+
+/** Outline heart — the "not favorited" state. */
+export function HeartIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d={HEART_PATH} />
+    </Svg>
+  );
+}
+
+/** Solid heart — the "favorited" state (filled via currentColor). */
+export function HeartFilledIcon({ size = 24, ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="none"
+      aria-hidden="true"
+      focusable="false"
+      {...props}
+    >
+      <path d={HEART_PATH} />
+    </svg>
+  );
+}
+
 const EYES = (
   <>
     <circle cx="9" cy="10.5" r="1.05" fill="currentColor" stroke="none" />

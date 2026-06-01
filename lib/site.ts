@@ -26,11 +26,13 @@ export const TOP_NAV: NavItem[] = [
   { label: "ホーム", href: "/" },
   { label: "カテゴリ", href: "/#categories" },
   { label: "人気", href: "/#popular" },
+  { label: "お気に入り", href: "/favorites" },
   { label: "運営者情報", href: "/about" },
 ];
 
 /**
- * Mobile bottom tab bar — standardized order everywhere: ホーム・検索・カテゴリ・情報
+ * Mobile bottom tab bar — standardized order everywhere:
+ * ホーム・検索・カテゴリ・お気に入り・情報
  * (icon names map to CategoryIcon-independent icons in components/icons.tsx).
  */
 export const BOTTOM_NAV: { label: string; href: string; icon: BottomNavIcon }[] =
@@ -38,10 +40,11 @@ export const BOTTOM_NAV: { label: string; href: string; icon: BottomNavIcon }[] 
     { label: "ホーム", href: "/", icon: "home" },
     { label: "検索", href: "/search", icon: "search" },
     { label: "カテゴリ", href: "/#categories", icon: "grid" },
+    { label: "お気に入り", href: "/favorites", icon: "favorites" },
     { label: "情報", href: "/about", icon: "info" },
   ];
 
-export type BottomNavIcon = "home" | "search" | "grid" | "info";
+export type BottomNavIcon = "home" | "search" | "grid" | "favorites" | "info";
 
 /** Footer link columns (trust + legal), per charter. */
 export const FOOTER_LINKS: { heading: string; items: NavItem[] }[] = [

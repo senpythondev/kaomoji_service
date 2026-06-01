@@ -13,7 +13,7 @@ export function CopyButton({ text }: { text: string }) {
 
   async function handleCopy() {
     await copyText(text);
-    toast("コピーしました");
+    toast("コピーしました", "クリップボードに保存しました");
     setCopied(true);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setCopied(false), 1600);
