@@ -203,6 +203,22 @@ const NATURE: EmojiSeed[] = [
   { id: "emoji-nature-18", text: "🍄", categories: ["nature"], tags: ["きのこ", "キノコ", "秋", "茸"], reading: "きのこ", popularity: 50, createdAt: "2026-04-30" },
 ];
 
+// VS16 (base + U+FE0F) emoji — universally supported, restored after an earlier
+// removal based on a wrong theory. Allowed by the firm rule (base + optional VS16).
+const VS16: EmojiSeed[] = [
+  { id: "emoji-heart-01", text: "❤️", categories: ["love"], tags: ["赤いハート", "愛", "好き", "ラブ"], reading: "あかいはーと", popularity: 97, createdAt: "2025-07-06" },
+  { id: "emoji-weather-01", text: "☀️", categories: ["weather"], tags: ["太陽", "晴れ", "お日様", "快晴"], reading: "たいよう", popularity: 90, createdAt: "2025-07-13" },
+  { id: "emoji-weather-03", text: "☁️", categories: ["weather"], tags: ["曇り", "雲", "くもり"], reading: "くもり", popularity: 72, createdAt: "2025-09-15" },
+  { id: "emoji-weather-04", text: "🌧️", categories: ["weather"], tags: ["雨", "雨降り", "あめ"], reading: "あめ", popularity: 78, createdAt: "2025-10-09" },
+  { id: "emoji-weather-05", text: "⛈️", categories: ["weather"], tags: ["雷雨", "嵐", "かみなり"], reading: "らいう", popularity: 60, createdAt: "2025-11-06" },
+  { id: "emoji-weather-06", text: "🌩️", categories: ["weather"], tags: ["雷", "稲妻", "かみなり"], reading: "かみなり", popularity: 62, createdAt: "2025-12-04" },
+  { id: "emoji-weather-07", text: "❄️", categories: ["weather"], tags: ["雪", "結晶", "冬", "ゆき"], reading: "ゆき", popularity: 83, createdAt: "2026-01-12" },
+  { id: "emoji-weather-08", text: "☃️", categories: ["weather"], tags: ["雪だるま", "冬", "ゆきだるま"], reading: "ゆきだるま", popularity: 70, createdAt: "2026-02-08" },
+  { id: "emoji-hand-04", text: "✌️", categories: ["greeting"], tags: ["ピース", "勝利", "Vサイン"], reading: "ぴーす", popularity: 82, createdAt: "2025-09-24" },
+  { id: "emoji-hand-16", text: "☝️", categories: ["greeting"], tags: ["上", "人差し指", "ひとつ"], reading: "うえゆび", popularity: 58, createdAt: "2025-06-27" },
+  { id: "emoji-hand-17", text: "🖐️", categories: ["greeting"], tags: ["手のひら", "パー", "ストップ"], reading: "てのひら", popularity: 56, createdAt: "2025-09-12" },
+];
+
 /** Flat emoji list, tagged with type. */
 export const EMOJI: ContentItem[] = [
   ...FACE,
@@ -213,4 +229,5 @@ export const EMOJI: ContentItem[] = [
   ...WEATHER,
   ...HAND,
   ...NATURE,
+  ...VS16,
 ].map((e) => ({ ...e, kind: "emoji" as const }));

@@ -22,15 +22,23 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 function firmness(seq) {
   const cps = [...seq].map((c) => c.codePointAt(0));
-  if (cps.length !== 1) {
-    return {
-      firm: false,
-      reason: `not single-codepoint (${cps.map((c) => "U+" + c.toString(16).toUpperCase()).join(" ")}) — VS16/ZWJ/skin-tone/flag/sequence not allowed`,
-    };
-  }
-  const hex = cps[0].toString(16).toUpperCase();
+  const show = (arr) => arr.map((c) => "U+" + c.toString(16).toUpperCase()).join(" ");
+  // Allow a single BASE emoji, optionally followed by VS16 (emoji presentation).
+  // VS16-qualified emoji (❤️ ☀️ …) are universally supported. Still reject
+  // ZWJ sequences, skin-tone modifiers, and flags.
+  let base = cps;
+  if (base[base.length - 1] === 0xfe0f) base = base.slice(0, -1);
+  if (base.includes(0xfe0f)) return { firm: false, reason: `misplaced/extra VS16 (${show(cps)})` };
+  if (base.includes(0x200d)) return { firm: false, reason: `ZWJ sequence not allowed (${show(cps)})` };
+  if (base.some((c) => c >= 0x1f3fb && c <= 0x1f3ff))
+    return { firm: false, reason: `skin-tone modifier not allowed (${show(cps)})` };
+  if (base.some((c) => c >= 0x1f1e6 && c <= 0x1f1ff))
+    return { firm: false, reason: `flag not allowed (${show(cps)})` };
+  if (base.length !== 1)
+    return { firm: false, reason: `not a single base codepoint (${show(cps)})` };
+  const hex = base[0].toString(16).toUpperCase();
   const v = EMOJI_VERSION[hex];
-  if (v === undefined) return { firm: false, reason: `U+${hex} is not a recognized single-codepoint emoji` };
+  if (v === undefined) return { firm: false, reason: `U+${hex} is not a recognized emoji` };
   if (v > CUTOFF) return { firm: false, reason: `Emoji ${v} > cutoff ${CUTOFF}` };
   return { firm: true };
 }
@@ -68,5 +76,5 @@ if (nonFirm.length || corrupted.length || dupes.length) {
 }
 
 console.log(
-  `✓ emoji check: all ${usage.size} distinct emoji are firm — single-codepoint, Emoji <= ${CUTOFF} (${emojiTexts.length} emoji items)`,
+  `✓ emoji check: all ${usage.size} distinct emoji are firm — single base codepoint (optional VS16), Emoji <= ${CUTOFF} (${emojiTexts.length} emoji items)`,
 );
