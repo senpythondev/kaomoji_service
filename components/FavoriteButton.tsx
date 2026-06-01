@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { type ContentItem, unitNoun } from "@/lib/content";
 import { useFavorites } from "./FavoritesProvider";
 import { useToast } from "./ToastProvider";
@@ -27,6 +28,9 @@ export function FavoriteButton({
   const { isFavorite, toggle } = useFavorites();
   const toast = useToast();
   const fav = isFavorite(item.id);
+  // Quick pop when toggled ON (not on removal). Reset on animation end so it can
+  // replay; inert under reduced motion (the keyframe simply doesn't run).
+  const [pop, setPop] = useState(false);
 
   function handleClick(e: React.MouseEvent) {
     // The card's copy button sits behind this control — don't let the tap fall
@@ -34,11 +38,24 @@ export function FavoriteButton({
     e.preventDefault();
     e.stopPropagation();
     const nowFavorite = toggle(item.id);
+    if (nowFavorite) setPop(true);
     toast(nowFavorite ? "お気に入りに追加しました" : "お気に入りから削除しました");
   }
 
   const noun = unitNoun(item.kind);
   const ariaLabel = `${noun} ${item.text} を${fav ? "お気に入りから削除" : "お気に入りに追加"}`;
+  const heart = (
+    <span
+      className={pop ? "motion-pop inline-flex" : "inline-flex"}
+      onAnimationEnd={() => setPop(false)}
+    >
+      {fav ? (
+        <HeartFilledIcon size={variant === "labeled" ? 18 : 15} />
+      ) : (
+        <HeartIcon size={variant === "labeled" ? 18 : 15} />
+      )}
+    </span>
+  );
 
   if (variant === "labeled") {
     return (
@@ -47,13 +64,13 @@ export function FavoriteButton({
         onClick={handleClick}
         aria-pressed={fav}
         aria-label={ariaLabel}
-        className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+        className={`motion-tap inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
           fav
             ? "border-transparent bg-[var(--cat-love-soft)] text-[var(--cat-love)]"
             : "border-hairline bg-white text-ink-soft hover:text-[var(--cat-love)]"
         } ${className}`}
       >
-        {fav ? <HeartFilledIcon size={18} /> : <HeartIcon size={18} />}
+        {heart}
         {fav ? "お気に入り済み" : "お気に入り"}
       </button>
     );
@@ -65,13 +82,13 @@ export function FavoriteButton({
       onClick={handleClick}
       aria-pressed={fav}
       aria-label={ariaLabel}
-      className={`grid size-7 place-items-center rounded-full bg-white/85 shadow-sm transition hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary ${
+      className={`motion-tap grid size-7 place-items-center rounded-full bg-white/85 shadow-sm transition hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary ${
         fav
           ? "text-[var(--cat-love)] opacity-100"
           : "text-ink-faint opacity-70 hover:text-[var(--cat-love)] group-hover:opacity-100"
       } ${className}`}
     >
-      {fav ? <HeartFilledIcon size={15} /> : <HeartIcon size={15} />}
+      {heart}
     </button>
   );
 }

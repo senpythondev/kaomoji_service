@@ -74,7 +74,7 @@ export function SearchClient() {
                   type="button"
                   onClick={() => setFilter(f.key)}
                   aria-pressed={filter === f.key}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                  className={`motion-tap rounded-full px-3.5 py-1.5 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                     filter === f.key
                       ? "bg-primary text-white shadow-soft"
                       : "bg-white text-ink-soft ring-1 ring-hairline hover:text-ink"
@@ -133,7 +133,7 @@ function NoResults() {
             <li key={slug}>
               <Link
                 href={`/kaomoji/${slug}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-white px-3.5 py-2 text-sm font-semibold text-ink transition hover:border-transparent hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="motion-tap inline-flex items-center gap-1.5 rounded-full border border-hairline bg-white px-3.5 py-2 text-sm font-semibold text-ink transition hover:border-transparent hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <span
                   className="grid size-5 place-items-center"
@@ -150,7 +150,7 @@ function NoResults() {
 
       <Link
         href="/#popular"
-        className="mt-6 inline-flex items-center gap-1 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="motion-tap mt-6 inline-flex items-center gap-1 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         人気のアイテムをみる →
       </Link>

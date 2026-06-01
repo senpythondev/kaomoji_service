@@ -57,7 +57,7 @@ export function KaomojiCard({
         onClick={handleCopy}
         aria-label={`${unitNoun(kaomoji.kind)} ${kaomoji.text} をコピー`}
         style={{ backgroundColor: softVar }}
-        className="flex aspect-[5/4] w-full flex-col justify-between rounded-card p-3 text-left ring-1 ring-black/[0.03] shadow-soft transition duration-200 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="motion-card flex aspect-[5/4] w-full flex-col justify-between rounded-card p-3 text-left ring-1 ring-black/[0.03] shadow-soft hover:shadow-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         <span className="flex flex-1 items-center justify-center px-1">
           <Glyph text={kaomoji.text} className={`text-center ${sizeClass}`} />
@@ -69,7 +69,7 @@ export function KaomojiCard({
           <span
             className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold shadow-sm transition ${
               copied
-                ? "bg-[var(--cat-greeting)] text-white"
+                ? "motion-pulse bg-[var(--cat-greeting)] text-white"
                 : "bg-white text-ink-soft group-hover:text-primary"
             }`}
           >

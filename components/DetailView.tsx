@@ -154,7 +154,7 @@ export function DetailView({ item }: { item: ContentItem }) {
                 <li key={r.id}>
                   <Link
                     href={detailHref(r)}
-                    className="flex aspect-square flex-col items-center justify-center gap-1 rounded-2xl border border-hairline bg-white p-2 text-center transition hover:-translate-y-0.5 hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    className="motion-tap flex aspect-square flex-col items-center justify-center gap-1 rounded-2xl border border-hairline bg-white p-2 text-center transition hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:hover:-translate-y-0.5"
                   >
                     <Glyph
                       text={r.text}

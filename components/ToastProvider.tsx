@@ -60,7 +60,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         {content && (
           <div
             role="status"
-            className={`pointer-events-auto flex items-center gap-3 rounded-full bg-ink py-2.5 pl-2.5 pr-5 text-white shadow-card transition-all duration-300 ease-out ${
+            className={`pointer-events-auto flex items-center gap-3 rounded-full bg-ink py-2.5 pl-2.5 pr-5 text-white shadow-card transition duration-200 ease-out ${
               visible ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
             }`}
           >

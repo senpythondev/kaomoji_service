@@ -36,7 +36,7 @@ export function Header() {
         <Link
           href="/search"
           aria-label="顔文字を検索"
-          className="grid size-10 shrink-0 place-items-center rounded-full text-ink-soft transition hover:bg-primary-soft hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          className="motion-tap grid size-10 shrink-0 place-items-center rounded-full text-ink-soft transition hover:bg-primary-soft hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <SearchIcon size={20} />
         </Link>

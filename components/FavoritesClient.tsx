@@ -41,18 +41,34 @@ export function FavoritesClient() {
 
       <div className="mt-6 sm:mt-8">
         {!ready ? (
-          <p className="py-16 text-center text-sm text-ink-faint">読み込み中…</p>
+          <FavoritesSkeleton />
         ) : items.length > 0 ? (
-          <>
+          <div className="motion-fade-in">
             <p className="mb-4 text-sm font-semibold text-ink-soft">
               {items.length}件のお気に入り
             </p>
             <KaomojiGrid items={items} />
-          </>
+          </div>
         ) : (
-          <EmptyFavorites />
+          <div className="motion-fade-in">
+            <EmptyFavorites />
+          </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/** Soft placeholder grid shown only for the brief client read of localStorage. */
+function FavoritesSkeleton() {
+  return (
+    <div
+      aria-hidden="true"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4"
+    >
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div key={i} className="skeleton aspect-[5/4] w-full rounded-card" />
+      ))}
     </div>
   );
 }
@@ -76,7 +92,7 @@ function EmptyFavorites() {
 
       <Link
         href="/#popular"
-        className="mt-6 inline-flex items-center gap-1 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="motion-tap mt-6 inline-flex items-center gap-1 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         人気の顔文字をみる →
       </Link>

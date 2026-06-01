@@ -108,6 +108,19 @@
   --cat-weather: #4f9bd9;
   --cat-weather-soft: #def0fb;
 
+  /*
+   * Motion tokens — one source of truth so every interaction feels consistent.
+   * Durations stay short (this is a copy tool; motion must never make the user
+   * wait). Animations use only transform/opacity (GPU-friendly, no layout
+   * thrash). Everything that moves is opt-in under prefers-reduced-motion:
+   * no-preference below, so reduced-motion users get instant, transform-free
+   * states.
+   */
+  --motion-fast: 120ms;
+  --motion-base: 170ms;
+  --motion-page: 190ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
   color-scheme: light;
 }
 
@@ -172,11 +185,135 @@ body {
  * the kaomoji subset or any monochrome font.
  */
 
+/*
+ * Skeleton placeholder — a soft tinted block while client-only content (e.g.
+ * favorites read from localStorage) loads, instead of a blank flash. The
+ * shimmer is opt-in below; under reduced motion it stays a static tint.
+ */
+.skeleton {
+  background-color: var(--color-surface-tint);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.65) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+}
+
+/*
+ * All transform/animation-based motion is OPT-IN here. Reduced-motion users
+ * never enter this block, so they get instant, transform-free states (no press
+ * scale, no card lift, no page-transition movement, no shimmer).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Tactile press feedback for buttons/controls. */
+  .motion-tap {
+    transition: transform var(--motion-fast) var(--motion-ease);
+  }
+  .motion-tap:active {
+    transform: scale(0.97);
+  }
+
+  /* Cards: gentle lift on desktop hover, slight press on tap. */
+  .motion-card {
+    transition:
+      transform var(--motion-base) var(--motion-ease),
+      box-shadow var(--motion-base) var(--motion-ease);
+  }
+  @media (hover: hover) {
+    .motion-card:hover {
+      transform: translateY(-3px);
+    }
+  }
+  .motion-card:active {
+    transform: scale(0.985);
+    transition-duration: var(--motion-fast);
+  }
+
+  /* Favorite toggled on — a quick, satisfying pop. */
+  .motion-pop {
+    animation: motion-pop var(--motion-base) var(--motion-ease);
+  }
+  /* Copy confirmed — a quick reassuring pulse. */
+  .motion-pulse {
+    animation: motion-pulse var(--motion-base) var(--motion-ease);
+  }
+  /* Route change — a light, fast fade/slide that never blocks content. */
+  .motion-page-enter {
+    animation: motion-page-enter var(--motion-page) var(--motion-ease);
+  }
+  /* Content arriving after a skeleton/placeholder. */
+  .motion-fade-in {
+    animation: motion-fade-in var(--motion-base) var(--motion-ease);
+  }
+  .skeleton {
+    animation: skeleton-shimmer 1.3s ease-in-out infinite;
+  }
+
+  @keyframes motion-pop {
+    0% {
+      transform: scale(1);
+    }
+    45% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes motion-pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes motion-page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes motion-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes skeleton-shimmer {
+    from {
+      background-position: 150% 0;
+    }
+    to {
+      background-position: -150% 0;
+    }
+  }
+}
+
+/*
+ * Safety net: even for any transition/animation NOT covered by the opt-in block
+ * above (e.g. Tailwind hover color transitions), collapse durations so nothing
+ * animates under reduced motion.
+ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

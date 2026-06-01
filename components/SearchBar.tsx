@@ -49,7 +49,7 @@ export function SearchBar({
       />
       <button
         type="submit"
-        className="absolute right-1.5 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white transition hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-5"
+        className="motion-tap absolute right-1.5 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white transition hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-5"
       >
         <SearchIcon size={16} className="sm:hidden" />
         <span className="hidden sm:inline">検索</span>

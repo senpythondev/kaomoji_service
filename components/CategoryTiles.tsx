@@ -13,10 +13,10 @@ export function CategoryTiles() {
         <Link
           key={category.slug}
           href={`/kaomoji/${category.slug}`}
-          className="group flex min-w-20 shrink-0 flex-col items-center gap-2 rounded-2xl border border-hairline bg-white px-3 py-3.5 transition hover:-translate-y-0.5 hover:border-transparent hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-w-0 sm:flex-1 sm:basis-24"
+          className="motion-tap group flex min-w-20 shrink-0 flex-col items-center gap-2 rounded-2xl border border-hairline bg-white px-3 py-3.5 transition hover:border-transparent hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:hover:-translate-y-0.5 sm:min-w-0 sm:flex-1 sm:basis-24"
         >
           <span
-            className="grid size-12 place-items-center rounded-full transition group-hover:scale-105"
+            className="grid size-12 place-items-center rounded-full transition motion-safe:group-hover:scale-105"
             style={{ backgroundColor: category.softVar, color: category.accentVar }}
           >
             <CategoryIcon name={category.slug} size={24} />

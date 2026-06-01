@@ -38,7 +38,7 @@ export function RelatedCategories({
           <li key={link.href}>
             <Link
               href={link.href}
-              className="group flex items-center justify-between gap-3 rounded-2xl border border-hairline bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-transparent hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="motion-tap group flex items-center justify-between gap-3 rounded-2xl border border-hairline bg-white px-4 py-3 transition hover:border-transparent hover:shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:hover:-translate-y-0.5"
             >
               <span className="flex items-center gap-3">
                 <span
@@ -53,7 +53,7 @@ export function RelatedCategories({
                 {link.count}件
                 <ChevronRightIcon
                   size={16}
-                  className="transition group-hover:translate-x-0.5 group-hover:text-primary"
+                  className="transition group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
                 />
               </span>
             </Link>

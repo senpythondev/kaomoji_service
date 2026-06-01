@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
 import { ToastProvider } from "@/components/ToastProvider";
 import { FavoritesProvider } from "@/components/FavoritesProvider";
+import { PageTransition } from "@/components/PageTransition";
 
 /*
  * Noto Sans JP, self-hosted via next/font. Discrete weights + preload:false is
@@ -80,7 +81,9 @@ export default function RootLayout({
         <ToastProvider>
           <FavoritesProvider>
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </main>
             <Footer />
             <BottomNav />
           </FavoritesProvider>
