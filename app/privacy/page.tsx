@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ContentPage, Section, Placeholder } from "@/components/ContentPage";
-import { SITE } from "@/lib/site";
+import { ContentPage, Section } from "@/components/ContentPage";
+import { SITE, OPERATOR } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
@@ -21,8 +21,7 @@ export const metadata: Metadata = {
  * The hosting provider (e.g. Vercel) may process standard access logs (IP,
  * user agent) as part of serving the site. Must be reviewed by a qualified
  * professional before launch, and revised before v3 paid features (which also
- * require a 特定商取引法に基づく表記 page). Confirm placeholders
- * ([OPERATOR/CONTACT], 制定日).
+ * require a 特定商取引法に基づく表記 page).
  */
 export default function PrivacyPage() {
   return (
@@ -84,16 +83,21 @@ export default function PrivacyPage() {
           ページよりお願いいたします。
         </p>
         <p>
-          運営者・お問い合わせ先：<Placeholder>[OPERATOR/CONTACT]</Placeholder>
+          運営者・お問い合わせ先：{OPERATOR.name}（
+          <a
+            href={`mailto:${OPERATOR.email}`}
+            className="font-semibold text-primary hover:underline"
+          >
+            {OPERATOR.email}
+          </a>
+          ）
         </p>
         <p>
           本ポリシーは、必要に応じて改定することがあります。改定後の内容は本ページに掲載した時点から有効となります。
         </p>
       </Section>
 
-      <p className="text-sm text-ink-faint">
-        制定日：<Placeholder>[制定日]</Placeholder>
-      </p>
+      <p className="text-sm text-ink-faint">制定日：2026年6月2日</p>
     </ContentPage>
   );
 }

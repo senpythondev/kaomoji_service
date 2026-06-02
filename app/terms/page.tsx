@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ContentPage, Section, Placeholder } from "@/components/ContentPage";
-import { SITE } from "@/lib/site";
+import { ContentPage, Section } from "@/components/ContentPage";
+import { SITE, OPERATOR } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "利用規約",
@@ -16,8 +16,7 @@ export const metadata: Metadata = {
  * favorites). It must be reviewed by a qualified professional before launch, and
  * MUST be revised before any v3 paid features ship — at which point a
  * 特定商取引法に基づく表記 (Act on Specified Commercial Transactions) page also
- * becomes legally required. Placeholders ([OPERATOR/CONTACT], 制定日) are for the
- * PM to confirm.
+ * becomes legally required.
  */
 export default function TermsPage() {
   return (
@@ -92,8 +91,14 @@ export default function TermsPage() {
       <Section title="第9条（準拠法・運営者）">
         <p>本規約の解釈にあたっては、日本法を準拠法とします。</p>
         <p>
-          運営者・お問い合わせ先：<Placeholder>[OPERATOR/CONTACT]</Placeholder>
-          （詳しくは
+          運営者・お問い合わせ先：{OPERATOR.name}（
+          <a
+            href={`mailto:${OPERATOR.email}`}
+            className="font-semibold text-primary hover:underline"
+          >
+            {OPERATOR.email}
+          </a>
+          ）（詳しくは
           <Link href="/about" className="font-semibold text-primary hover:underline">
             運営者情報
           </Link>
@@ -101,9 +106,7 @@ export default function TermsPage() {
         </p>
       </Section>
 
-      <p className="text-sm text-ink-faint">
-        制定日：<Placeholder>[制定日]</Placeholder>
-      </p>
+      <p className="text-sm text-ink-faint">制定日：2026年6月2日</p>
     </ContentPage>
   );
 }

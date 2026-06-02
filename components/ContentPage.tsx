@@ -53,12 +53,3 @@ export function Section({
     </section>
   );
 }
-
-/** Placeholder chip for values the operator must supply before launch. */
-export function Placeholder({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="rounded-md bg-[var(--cat-happy-soft)] px-1.5 py-0.5 font-mono text-[0.85em] font-semibold text-[var(--cat-happy)]">
-      {children}
-    </span>
-  );
-}

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ContentPage, Section, Placeholder } from "@/components/ContentPage";
+import { ContentPage, Section } from "@/components/ContentPage";
 import { FeedbackForm } from "@/components/FeedbackForm";
+import { OPERATOR } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
@@ -30,13 +31,14 @@ export default function ContactPage() {
         <p>
           返信が必要な場合や、フォームに書ききれない内容は、こちらの連絡先までお送りください。
         </p>
-        {/*
-          PM TO FILL: replace [CONTACT_METHOD] with the operator's real email
-          address or external contact form URL. Keep it as a real, clickable
-          mailto:/https: link once supplied.
-        */}
         <p>
-          連絡先：<Placeholder>[CONTACT_METHOD]</Placeholder>
+          連絡先：
+          <a
+            href={`mailto:${OPERATOR.email}`}
+            className="font-semibold text-primary hover:underline"
+          >
+            {OPERATOR.email}
+          </a>
           （運営者が確認のうえ、順次対応いたします）
         </p>
         <p className="text-ink-faint">

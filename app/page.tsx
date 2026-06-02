@@ -123,9 +123,9 @@ export default function HomePage() {
             ご意見・ご要望
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-ink-soft sm:text-base">
-            いただいた声をもとに、どんどん改善していきます。
+            お寄せいただいたメッセージは、運営者がひとつひとつ必ず読ませていただきます。
             <br className="hidden sm:block" />
-            追加してほしい顔文字や、使いにくい点などお気軽にお寄せください。
+            その声をもとにサービスを少しずつ改善していて、これまでの歩みは改善履歴でご覧いただけます。追加してほしい顔文字や、使いにくい点など、お気軽にお聞かせください。
           </p>
         </div>
         <div className="mx-auto mt-6 max-w-2xl">

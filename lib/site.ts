@@ -16,6 +16,12 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://kaomoji-palette.com",
 } as const;
 
+/** Operator (運営者) details — shown on About / Contact / legal pages. */
+export const OPERATOR = {
+  name: "風",
+  email: "tk.kaze.yozakura@gmail.com",
+} as const;
+
 export interface NavItem {
   label: string;
   href: string;
