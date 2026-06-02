@@ -10,17 +10,20 @@ export function FeedbackForm() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<Status>("idle");
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const text = message.trim();
     if (!text || status === "sending") return;
+
+    // Honeypot: read the hidden field straight off the form (bots fill the DOM).
+    const website = (new FormData(event.currentTarget).get("website") as string) ?? "";
 
     setStatus("sending");
     try {
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, website }),
       });
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       setStatus("done");
@@ -57,6 +60,22 @@ export function FeedbackForm() {
       onSubmit={handleSubmit}
       className="rounded-card border border-hairline bg-white p-4 shadow-soft sm:p-5"
     >
+      {/*
+        Honeypot — hidden from real users (off-screen, not focusable, excluded
+        from a11y). Bots that auto-fill every field will populate it, and the
+        server silently drops those submissions.
+      */}
+      <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+        <label htmlFor="feedback-website">Website</label>
+        <input
+          id="feedback-website"
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <label htmlFor="feedback-message" className="sr-only">
         ご意見・ご要望
       </label>

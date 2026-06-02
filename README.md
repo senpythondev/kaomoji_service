@@ -14,6 +14,24 @@ project charter (the authoritative spec).
 - Single serverless route handler at `/api/feedback`
 - Target hosting: Vercel (free tier)
 
+## Feedback email (environment variables)
+
+On a valid submission, `/api/feedback` emails the operator via
+[Resend](https://resend.com) (called over its REST API — no extra dependency).
+Set these on **Vercel → Project → Settings → Environment Variables** (never
+commit keys; `.env*` is gitignored):
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `RESEND_API_KEY` | yes (to send) | Resend API key. If unset, submissions still succeed for the user and the message is logged with a warning — sending is simply skipped (safe for local/dev). |
+| `FEEDBACK_TO_EMAIL` | no | Recipient. Defaults to the operator address in [`lib/site.ts`](./lib/site.ts) (`tk.kaze.yozakura@gmail.com` → 風). |
+| `FEEDBACK_FROM_EMAIL` | no | Sender. Defaults to Resend's shared `onboarding@resend.dev`. For production, use a sender on a domain verified in Resend, e.g. `Kaomoji Palette <feedback@kaomoji-palette.com>`. |
+
+Where the email goes: each feedback message is sent to `FEEDBACK_TO_EMAIL` (the
+operator) with the message body + timestamp and the subject
+`Kaomoji Palette フィードバック`. Abuse protection: message length limit, a hidden
+honeypot field, and a best-effort in-memory per-IP rate limit (no database).
+
 ## Getting started
 
 ```bash
